@@ -5,7 +5,6 @@ import ProductDetailPage from "./pages/ProductDetailPage";
 import ProductsPage from "./pages/ProductsPage";
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
-import Cart from "./components/cart/Cart";
 
 function AppLayout() {
   return (

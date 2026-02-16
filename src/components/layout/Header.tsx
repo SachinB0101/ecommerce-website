@@ -1,6 +1,10 @@
+import { Link, Links } from "react-router-dom";
+import Navbar from "../navbar/Navbar";
+
+
 const Header = () => {
   return (
-    <div>Header</div>
-  )
-}
-export default Header
+    <Navbar/>
+  );
+};
+export default Header;
