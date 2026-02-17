@@ -1,6 +1,13 @@
-import { Link, Links } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
-
+import {
+  SignInButton,
+  SignOutButton,
+  SignedIn,
+  SignedOut,
+} from "@clerk/clerk-react";
+import { Button } from "../ui/button";
+import { User } from "lucide-react";
 
 const Header = () => {
   return (
@@ -12,7 +19,19 @@ const Header = () => {
           </span>
         </Link>
         <Navbar />
-        <div className="flex items-center space-x-4"></div>
+        <div className="flex items-center space-x-4">
+          <SignedOut>
+            <SignInButton mode="modal">
+              <Button variant="ghost" size="icon" className="hidden md:flex">
+                <User className="h-5 w-5" />
+              </Button>
+            </SignInButton>
+          </SignedOut>
+
+          <SignedIn>
+            <SignOutButton>Sign Out</SignOutButton>
+          </SignedIn>
+        </div>
       </div>
     </header>
   );
