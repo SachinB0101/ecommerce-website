@@ -9,18 +9,24 @@ import {
 
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
-import { ProtectedRoute } from "./components/auth/ProtectedRoute";
-import WhishlistPage from "./pages/WhishlistPage";
-import CheckoutPage from "./pages/CheckoutPage";
-import ProfilePage from "./pages/ProfilePage";
-import OrderHistoryPage from "./pages/OrderHistoryPage";
+import ErrorPage from "./pages/ErrorPage";
 
-const HomePage = lazy(() => import("./pages/HomePage"));
+import HomePage from "./pages/HomePage";
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
 const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
-const ErrorPage = lazy(() => import("./pages/ErrorPage"));
+
+
+import ProtectedRoute from "./components/auth/ProtectedRoute";
+
+const WhishlistPage = lazy(() => import("./pages/WhishlistPage"));
+const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
 
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
+if (!CLERK_PUBLISHABLE_KEY) {
+  throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY in .env");
+}
 
 function AppLayout() {
   return (
