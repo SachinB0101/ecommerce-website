@@ -1,4 +1,5 @@
 import { lazy, Suspense } from "react";
+import { ClerkProvider } from "@clerk/clerk-react";
 import {
   Outlet,
   RouterProvider,
@@ -8,10 +9,17 @@ import {
 
 import Header from "./components/layout/Header";
 import Footer from "./components/layout/Footer";
+import { ProtectedRoute } from "./components/auth/ProtectedRoute";
+import WhishlistPage from "./pages/WhishlistPage";
+import CheckoutPage from "./pages/CheckoutPage";
+import ProfilePage from "./pages/ProfilePage";
+import OrderHistoryPage from "./pages/OrderHistoryPage";
 
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
 const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
+
+const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
 function AppLayout() {
   return (
@@ -52,12 +60,25 @@ const router = createBrowserRouter([
       { index: true, element: <HomePage /> },
       { path: "products", element: <ProductsPage /> },
       { path: "products/:id", element: <ProductDetailPage /> },
+      {
+        element: <ProtectedRoute />,
+        children: [
+          { path: "wishlist", element: <WhishlistPage /> },
+          { path: "checkout", element: <CheckoutPage /> },
+          { path: "profile", element: <ProfilePage /> },
+          { path: "orders", element: <OrderHistoryPage /> },
+        ],
+      },
     ],
   },
 ]);
 
 function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
+      <RouterProvider router={router} />
+    </ClerkProvider>
+  );
 }
 
 export default App;
