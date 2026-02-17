@@ -31,3 +31,10 @@ export const fadeInRight = {
     transition: { duration: 0.6 },
   },
 };
+
+export function formatPrice(price: number): string {
+  return new Intl.NumberFormat("en-US", {
+    style: "currency",
+    currency: "USD",
+  }).format(price);
+}

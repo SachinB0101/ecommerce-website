@@ -12,10 +12,11 @@ import Footer from "./components/layout/Footer";
 import ErrorPage from "./pages/ErrorPage";
 
 import HomePage from "./pages/HomePage";
-const ProductsPage = lazy(() => import("./pages/ProductsPage"));
-const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
+import CategoriesPage from "./pages/CategoriesPage";
+import ProductsPage from "./pages/ProductsPage";
+const SingleProduct = lazy(() => import("./pages/SingleProduct"));
 
-
+//protected routes
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 
 const WhishlistPage = lazy(() => import("./pages/WhishlistPage"));
@@ -23,6 +24,7 @@ const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
 
+//Clerk authentication
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 if (!CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY in .env");
@@ -56,8 +58,9 @@ const router = createBrowserRouter([
     errorElement: <ErrorPage />,
     children: [
       { index: true, element: <HomePage /> },
+      { path: "categories/:category", element: <CategoriesPage /> },
       { path: "products", element: <ProductsPage /> },
-      { path: "products/:id", element: <ProductDetailPage /> },
+      { path: "products/:id", element: <SingleProduct /> },
       {
         element: <ProtectedRoute />,
         children: [

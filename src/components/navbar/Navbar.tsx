@@ -2,10 +2,10 @@ import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
   const navLinks = [
-    { to: "/products/women", label: "Women" },
-    { to: "/products/men", label: "Men" },
-    { to: "/products/accessories", label: "Accessories" },
-    { to: "/products/home", label: "Home" },
+    { to: "/categories/women", label: "Women" },
+    { to: "/categories/men", label: "Men" },
+    { to: "/categories/accessories", label: "Accessories" },
+    { to: "/categories/home", label: "Home" },
   ];
 
   return (
