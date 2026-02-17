@@ -18,6 +18,7 @@ import OrderHistoryPage from "./pages/OrderHistoryPage";
 const HomePage = lazy(() => import("./pages/HomePage"));
 const ProductsPage = lazy(() => import("./pages/ProductsPage"));
 const ProductDetailPage = lazy(() => import("./pages/ProductDetailPage"));
+const ErrorPage = lazy(() => import("./pages/ErrorPage"));
 
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 
@@ -38,15 +39,6 @@ function AppLayout() {
       </main>
       <Footer />
       <ScrollRestoration />
-    </div>
-  );
-}
-
-function ErrorPage() {
-  return (
-    <div className="container py-20 text-center">
-      <h1 className="text-3xl font-bold mb-4">Something went wrong</h1>
-      <p className="text-muted-foreground">Please try again later.</p>
     </div>
   );
 }
