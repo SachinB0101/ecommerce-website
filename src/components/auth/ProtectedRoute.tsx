@@ -1,6 +1,5 @@
-import { useAuth } from "@clerk/clerk-react";
-import { Navigate, Outlet } from "react-router-dom";
-
+import { useAuth, SignIn } from "@clerk/clerk-react";
+import { Outlet } from "react-router-dom";
 
 export default function ProtectedRoute() {
   const { isSignedIn, isLoaded } = useAuth();
@@ -14,8 +13,12 @@ export default function ProtectedRoute() {
   }
 
   if (!isSignedIn) {
-    return <Navigate to="/" replace />;
+    return (
+      <div className="flex justify-center py-12">
+        <SignIn routing="hash" />
+      </div>
+    );
   }
 
-  return <Outlet/>
+  return <Outlet />;
 }
