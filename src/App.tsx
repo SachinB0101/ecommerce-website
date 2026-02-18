@@ -1,7 +1,8 @@
 import { lazy, Suspense } from "react";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { Provider } from "react-redux";
-import { store } from "./app/store"
+import { store } from "./app/store";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
   RouterProvider,
@@ -31,6 +32,8 @@ const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
 if (!CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY in .env");
 }
+
+const queryClient = new QueryClient();
 
 function AppLayout() {
   return (
@@ -80,7 +83,9 @@ function App() {
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
       <Provider store={store}>
-        <RouterProvider router={router} />
+        <QueryClientProvider client={queryClient}>
+          <RouterProvider router={router} />
+        </QueryClientProvider>
       </Provider>
     </ClerkProvider>
   );
