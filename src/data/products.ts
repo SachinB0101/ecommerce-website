@@ -275,3 +275,239 @@ export const products: Product[] = [
     material: "100% New Zealand Wool",
   },
 ];
+
+export const moreProducts: Product[] = [
+  {
+    id: "13",
+    name: "Cashmere Cardigan",
+    description:
+      "Soft cashmere cardigan with a relaxed fit and button closure. Perfect for layering during cooler months.",
+    price: 220,
+    category: "women",
+    image:
+      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1602810318383-e386cc2a3ccf?w=800&q=80",
+      "https://images.unsplash.com/photo-1620799140408-edc6dcb6d633?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.6,
+    reviews: 78,
+    sizes: ["XS", "S", "M", "L", "XL"],
+    colors: ["Beige", "Grey", "Blush"],
+    brand: "Nordic Essentials",
+    material: "100% Cashmere",
+  },
+  {
+    id: "14",
+    name: "Denim Shorts",
+    description:
+      "High-rise denim shorts with frayed hems. Comfortable and casual for summer outings.",
+    price: 89,
+    category: "women",
+    image:
+      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.5,
+    reviews: 54,
+    sizes: ["XS", "S", "M", "L"],
+    colors: ["Light Blue", "Dark Blue"],
+    brand: "Atelier Studio",
+    material: "100% Cotton",
+  },
+  {
+    id: "15",
+    name: "Leather Wallet",
+    description:
+      "Premium leather wallet with multiple card slots and a sleek design. Durable and stylish.",
+    price: 120,
+    category: "accessories",
+    image:
+      "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1590874103328-eac38a683ce7?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.9,
+    reviews: 102,
+    colors: ["Brown", "Black"],
+    brand: "Artisan Leather Co.",
+    material: "Full-grain Leather",
+  },
+  {
+    id: "16",
+    name: "Men's Linen Pants",
+    description:
+      "Lightweight linen trousers for a relaxed fit. Perfect for casual and semi-formal summer events.",
+    price: 135,
+    category: "men",
+    image:
+      "https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1533867617858-e7b97e060509?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.7,
+    reviews: 88,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["Beige", "Navy", "Olive"],
+    brand: "Coastal Co.",
+    material: "100% Linen",
+  },
+  {
+    id: "17",
+    name: "Wool Beanie",
+    description:
+      "Warm and cozy wool beanie. Great for winter sports or casual wear.",
+    price: 45,
+    category: "accessories",
+    image:
+      "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1601924994987-69e26d50dc26?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.8,
+    reviews: 60,
+    colors: ["Black", "Grey", "Navy"],
+    brand: "Milano Silk",
+    material: "100% Wool",
+  },
+  {
+    id: "18",
+    name: "Bamboo Cutting Board Set",
+    description:
+      "Set of 3 bamboo cutting boards. Eco-friendly, durable, and perfect for kitchen prep.",
+    price: 65,
+    category: "home",
+    image:
+      "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1578500494198-246f612d3b3d?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.9,
+    reviews: 120,
+    colors: ["Natural Bamboo"],
+    brand: "Modern Weave",
+    material: "100% Bamboo",
+  },
+  {
+    id: "19",
+    name: "Glass Water Bottle",
+    description:
+      "Reusable glass water bottle with silicone sleeve. Eco-friendly and stylish for everyday use.",
+    price: 32,
+    category: "accessories",
+    image:
+      "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1610701596007-11502861dcfa?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.7,
+    reviews: 95,
+    colors: ["Clear", "Green", "Blue"],
+    brand: "Eco Essentials",
+    material: "Glass, Silicone",
+  },
+  {
+    id: "20",
+    name: "Men's Leather Belt",
+    description:
+      "Classic leather belt with metal buckle. Perfect for formal and casual outfits.",
+    price: 75,
+    category: "men",
+    image:
+      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1551028719-00167b16eac5?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.8,
+    reviews: 77,
+    colors: ["Black", "Brown"],
+    brand: "Heritage Footwear",
+    material: "Full-grain Leather",
+  },
+  {
+    id: "21",
+    name: "Ceramic Vase",
+    description: "Handmade ceramic vase. Adds elegance and style to any room.",
+    price: 98,
+    category: "home",
+    image:
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.9,
+    reviews: 82,
+    colors: ["White", "Blue", "Terracotta"],
+    brand: "Artisan Table",
+    material: "Handmade Ceramic",
+  },
+  {
+    id: "22",
+    name: "Silk Tie",
+    description:
+      "Premium silk tie for formal occasions. Smooth texture and vibrant colors.",
+    price: 55,
+    category: "men",
+    image:
+      "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1524805444758-089113d48a6d?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.6,
+    reviews: 64,
+    colors: ["Red", "Navy", "Black"],
+    brand: "Precision Time",
+    material: "100% Silk",
+  },
+  {
+    id: "23",
+    name: "Fleece Blanket",
+    description: "Soft and warm fleece blanket. Ideal for cozy nights at home.",
+    price: 55,
+    category: "home",
+    image:
+      "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1584100936595-c0654b55a2e2?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.8,
+    reviews: 112,
+    colors: ["Grey", "Blue", "Cream"],
+    brand: "Luxe Home",
+    material: "100% Polyester",
+  },
+  {
+    id: "24",
+    name: "Sports Sneakers",
+    description:
+      "Comfortable sneakers designed for sports and casual wear. Lightweight and breathable.",
+    price: 140,
+    category: "men",
+    image:
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    images: [
+      "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=800&q=80",
+    ],
+    inStock: true,
+    rating: 4.9,
+    reviews: 210,
+    sizes: ["7", "8", "9", "10", "11", "12"],
+    colors: ["White", "Black", "Grey"],
+    brand: "Heritage Footwear",
+    material: "Synthetic Leather",
+  },
+];
+
+export const allProducts = [...products, ...moreProducts];
