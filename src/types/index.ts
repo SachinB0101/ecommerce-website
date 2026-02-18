@@ -21,3 +21,10 @@ export interface Category {
   slug: string;
   image: string;
 }
+
+export interface CartItem {
+  productId: string;
+  quantity: number;
+  size?: string;
+  color?: string;
+}
