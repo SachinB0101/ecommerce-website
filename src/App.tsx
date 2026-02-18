@@ -1,5 +1,7 @@
 import { lazy, Suspense } from "react";
 import { ClerkProvider } from "@clerk/clerk-react";
+import { Provider } from "react-redux";
+import { store } from "./app/store"
 import {
   Outlet,
   RouterProvider,
@@ -77,7 +79,9 @@ const router = createBrowserRouter([
 function App() {
   return (
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
-      <RouterProvider router={router} />
+      <Provider store={store}>
+        <RouterProvider router={router} />
+      </Provider>
     </ClerkProvider>
   );
 }
