@@ -20,7 +20,7 @@ const CategoryCard = ({category, index}:CategoryCardProps) => {
       custom={index * 0.1}
     >
       <Link
-        to={`/products/${category.slug}`}
+        to={`/categories/${category.slug}`}
         className="group block relative aspect-[3/4] overflow-hidden rounded-lg shadow-sm hover:shadow-xl transition-all duration-300"
       >
         <img

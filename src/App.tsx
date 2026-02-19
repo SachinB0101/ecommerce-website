@@ -21,6 +21,7 @@ const SingleProduct = lazy(() => import("./pages/SingleProduct"));
 
 //protected routes
 import ProtectedRoute from "./components/auth/ProtectedRoute";
+import { Cart } from "./components/cart/Cart";
 
 const WhishlistPage = lazy(() => import("./pages/WhishlistPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
@@ -51,6 +52,7 @@ function AppLayout() {
         </Suspense>
       </main>
       <Footer />
+      <Cart/>
       <ScrollRestoration />
     </div>
   );

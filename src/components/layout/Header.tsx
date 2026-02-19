@@ -7,9 +7,13 @@ import {
   SignedOut,
 } from "@clerk/clerk-react";
 import { Button } from "../ui/button";
-import { User } from "lucide-react";
+import { User, ShoppingBag } from "lucide-react";
+import { setCartOpen } from "@/features/cart/cartSlice";
+import { useAppDispatch } from "@/app/hooks/useRedux";
 
 const Header = () => {
+  const dispatch = useAppDispatch();
+  const totalItems = 12;
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -31,6 +35,23 @@ const Header = () => {
           <SignedIn>
             <SignOutButton>Sign Out</SignOutButton>
           </SignedIn>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => {
+              console.log("clicked!!!!!!");
+              dispatch(setCartOpen(true));
+            }}
+            className="relative"
+          >
+            <ShoppingBag className="h-5 w-5" />
+            {totalItems > 0 && (
+              <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-primary text-[10px] font-bold text-primary-foreground">
+                {totalItems}
+              </span>
+            )}
+          </Button>
         </div>
       </div>
     </header>
