@@ -13,7 +13,7 @@ import { useAppDispatch } from "@/app/hooks/useRedux";
 
 const Header = () => {
   const dispatch = useAppDispatch();
-  const totalItems = 12;
+  const totalItems = 12; //dummy
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
@@ -40,7 +40,6 @@ const Header = () => {
             variant="ghost"
             size="icon"
             onClick={() => {
-              console.log("clicked!!!!!!");
               dispatch(setCartOpen(true));
             }}
             className="relative"

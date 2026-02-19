@@ -53,7 +53,6 @@ const cartSlice = createSlice({
     },
 
     setCartOpen: (state, action: PayloadAction<boolean>) => {
-      console.log("in the reducer")
       state.isOpen = action.payload;
     },
   },
