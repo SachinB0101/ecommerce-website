@@ -24,13 +24,19 @@ const cartSlice = createSlice({
 
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const newItem = action.payload;
-      const existingItem = state.items.find((item) =>
-        doesExistInCart(item, newItem),
-      );
-      if (existingItem) {
-        existingItem.quantity += newItem.quantity;
-      } else {
+
+      if (state.items.length === 0) {
         state.items.push(newItem);
+      } else {
+        const existingItem = state.items.find((item) =>
+          doesExistInCart(item, newItem),
+        );
+
+        if (existingItem) {
+          existingItem.quantity += newItem.quantity;
+        } else {
+          state.items.push(newItem);
+        }
       }
     },
 
