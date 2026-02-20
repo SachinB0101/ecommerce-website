@@ -3,11 +3,13 @@ import type { CartItem } from "@/types";
 import { doesExistInCart } from "./doesExistInCart";
 
 interface CartState {
+  cartId: string | null;
   items: CartItem[];
   isOpen: boolean;
 }
 
 const initialState: CartState = {
+  cartId: null,
   items: [],
   isOpen: false,
 };
@@ -16,6 +18,10 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setCartId: (state, action: PayloadAction<string>) => {
+      state.cartId = action.payload;
+    },
+
     addToCart: (state, action: PayloadAction<CartItem>) => {
       const newItem = action.payload;
       const existingItem = state.items.find((item) =>
@@ -58,7 +64,13 @@ const cartSlice = createSlice({
   },
 });
 
-export const { addToCart, removeFromCart, updateCart, clearCart, setCartOpen } =
-  cartSlice.actions;
+export const {
+  setCartId,
+  addToCart,
+  removeFromCart,
+  updateCart,
+  clearCart,
+  setCartOpen,
+} = cartSlice.actions;
 
 export default cartSlice.reducer;
