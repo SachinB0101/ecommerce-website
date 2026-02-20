@@ -1,18 +1,14 @@
-import { useGetUser } from "@/app/hooks/useGetUser";
-import ErrorPage from "@/pages/ErrorPage";
+import { useUserDataSync } from "@/app/hooks/useUserDataSync";
 import type { ReactNode } from "react";
 import InitializingScreen from "../loading/InitializingScreen";
-import { useAuth } from "@clerk/clerk-react";
+import ErrorPage from "@/pages/ErrorPage";
 
 const SyncUserData = ({ children }: { children: ReactNode }) => {
-  const { isSignedIn } = useAuth();
-  const { data: userId, isLoading, isError } = useGetUser();
+  const {isError, isLoading} = useUserDataSync();
 
-  if (isSignedIn && isLoading) return <InitializingScreen />;
+  if (isLoading) return <InitializingScreen />;
 
-  if (isError) {
-    return <ErrorPage />;
-  }
+  if(isError) return <ErrorPage/>
 
   return <>{children}</>;
 };

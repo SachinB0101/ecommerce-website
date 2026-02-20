@@ -9,11 +9,14 @@ import {
 import { Button } from "../ui/button";
 import { User, ShoppingBag } from "lucide-react";
 import { setCartOpen } from "@/features/cart/cartSlice";
-import { useAppDispatch } from "@/app/hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/useRedux";
 
 const Header = () => {
   const dispatch = useAppDispatch();
-  const totalItems = 12; //dummy
+  const cartItems = useAppSelector((state) => state.cart.items);
+
+  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
       <div className="container flex h-16 items-center justify-between">
