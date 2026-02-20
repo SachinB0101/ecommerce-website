@@ -22,6 +22,7 @@ const SingleProduct = lazy(() => import("./pages/SingleProduct"));
 //protected routes
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { Cart } from "./components/cart/Cart";
+import SyncUserData from "./components/auth/SyncUserData";
 
 const WhishlistPage = lazy(() => import("./pages/WhishlistPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
@@ -52,7 +53,7 @@ function AppLayout() {
         </Suspense>
       </main>
       <Footer />
-      <Cart/>
+      <Cart />
       <ScrollRestoration />
     </div>
   );
@@ -86,7 +87,9 @@ function App() {
     <ClerkProvider publishableKey={CLERK_PUBLISHABLE_KEY}>
       <Provider store={store}>
         <QueryClientProvider client={queryClient}>
-          <RouterProvider router={router} />
+          <SyncUserData>
+            <RouterProvider router={router} />
+          </SyncUserData>
         </QueryClientProvider>
       </Provider>
     </ClerkProvider>
