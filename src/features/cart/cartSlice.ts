@@ -2,13 +2,9 @@ import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { CartItem } from "@/types";
 import { doesExistInCart } from "./doesExistInCart";
 
-interface CartState {
-  cartId: string | null;
-  items: CartItem[];
-  isOpen: boolean;
-}
+import type { Cart } from "@/types";
 
-const initialState: CartState = {
+const initialState: Cart = {
   cartId: null,
   items: [],
   isOpen: false,
@@ -18,6 +14,12 @@ const cartSlice = createSlice({
   name: "cart",
   initialState,
   reducers: {
+    setCart: (state, action: PayloadAction<Cart>) => {
+      state.cartId = action.payload.cartId;
+      state.items = action.payload.items;
+      state.isOpen = action.payload.isOpen;
+    },
+
     setCartId: (state, action: PayloadAction<string>) => {
       state.cartId = action.payload;
     },
@@ -77,6 +79,7 @@ export const {
   updateCart,
   clearCart,
   setCartOpen,
+  setCart,
 } = cartSlice.actions;
 
 export default cartSlice.reducer;

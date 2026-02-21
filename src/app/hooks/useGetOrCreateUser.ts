@@ -1,7 +1,6 @@
 import { supabase } from "@/supabaseClient";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/clerk-react";
-import type { User } from "@clerk/clerk-react";
 
 const getOrCreateUser = async (user: User): Promise<string> => {
   const { data, error } = await supabase
@@ -31,12 +30,12 @@ const getOrCreateUser = async (user: User): Promise<string> => {
   return data.id;
 };
 
-export const useGetOrCreateUser = () => {
-  const { user, isSignedIn, isLoaded } = useUser();
+export const useGetOrCreateUser = (option = {}) => {
+  const { user } = useUser();
 
   return useQuery({
     queryKey: ["user", user?.id],
     queryFn: () => getOrCreateUser(user!),
-    enabled: !!user?.id && isLoaded && !!isSignedIn,
+    ...option,
   });
 };
