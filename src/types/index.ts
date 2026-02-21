@@ -22,6 +22,12 @@ export interface Category {
   image: string;
 }
 
+export interface Cart {
+  cartId: string | null;
+  items: CartItem[];
+  isOpen: boolean;
+}
+
 export interface CartItem {
   productId: string;
   quantity: number;

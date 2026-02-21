@@ -1,7 +1,7 @@
 import { lazy, Suspense } from "react";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { Provider } from "react-redux";
-import { store } from "./app/store";
+import { store } from "./app/store/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import {
   Outlet,
