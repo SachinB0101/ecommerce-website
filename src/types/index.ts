@@ -29,6 +29,10 @@ export interface CartItem {
   color?: string;
 }
 
+export interface CartItemWithProduct extends CartItem {
+  product: Product;
+}
+
 export interface User {
   id: string;
   email: string;
