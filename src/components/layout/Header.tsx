@@ -2,12 +2,12 @@ import { Link } from "react-router-dom";
 import Navbar from "../navbar/Navbar";
 import {
   SignInButton,
-  SignOutButton,
   SignedIn,
   SignedOut,
+  UserButton,
 } from "@clerk/clerk-react";
 import { Button } from "../ui/button";
-import { User, ShoppingBag } from "lucide-react";
+import { User, ShoppingBag, Package, Heart } from "lucide-react";
 import { setCartOpen } from "@/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/useRedux";
 
@@ -36,7 +36,54 @@ const Header = () => {
           </SignedOut>
 
           <SignedIn>
-            <SignOutButton>Sign Out</SignOutButton>
+            <Button
+              variant="ghost"
+              size="icon"
+              asChild
+              className="hidden md:flex relative"
+            >
+              <Link to="/wishlist">
+                <Heart className="h-5 w-5" />
+              </Link>
+            </Button>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              asChild
+              className="hidden md:flex"
+            >
+              <Link to="/orders">
+                <Package className="h-5 w-5" />
+              </Link>
+            </Button>
+
+            <UserButton
+              afterSignOutUrl="/"
+              appearance={{
+                elements: {
+                  avatarBox: "h-9 w-9",
+                },
+              }}
+            >
+              <UserButton.MenuItems>
+                <UserButton.Link
+                  label="Profile"
+                  labelIcon={<User className="h-4 w-4" />}
+                  href="/profile"
+                />
+                <UserButton.Link
+                  label="Order History"
+                  labelIcon={<Package className="h-4 w-4" />}
+                  href="/orders"
+                />
+                <UserButton.Link
+                  label="Wishlist"
+                  labelIcon={<Heart className="h-4 w-4" />}
+                  href="/wishlist"
+                />
+              </UserButton.MenuItems>
+            </UserButton>
           </SignedIn>
 
           <Button
