@@ -13,16 +13,19 @@ import { formatPrice } from "@/lib/utils";
 import { useState } from "react";
 import { ChevronLeft, Star, ShoppingBag, Check } from "lucide-react";
 import { motion } from "framer-motion";
-import { useAppDispatch } from "@/app/hooks/useRedux";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/useRedux";
 import { addToCart } from "@/features/cart/cartSlice";
 import ErrorPage from "./ErrorPage";
 import { useAddItemToDB } from "@/app/hooks/useAddItemToDB";
 import { useAuth } from "@clerk/clerk-react";
+import type { CartItem } from "@/types";
 
 const SingleProduct = () => {
   const { isSignedIn } = useAuth();
   const dispatch = useAppDispatch();
   const { id } = useParams<{ id: string }>();
+
+  const cartId = useAppSelector((state) => state.cart.cartId);
 
   const [selectedSize, setSelectedSize] = useState<string>("");
   const [selectedColor, setSelectedColor] = useState<string>("");
@@ -62,7 +65,7 @@ const SingleProduct = () => {
   }
 
   const handleAddToCart = () => {
-    const newItem = {
+    const newItem: CartItem = {
       productId: product.id,
       quantity: 1,
       size: selectedSize || undefined,

@@ -1,12 +1,12 @@
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { useGetOrCreateCart } from "./useGetOrCreateCart";
-import { useGetOrCreateUser } from "./useGetOrCreateUser";
 import { setCart } from "@/features/cart/cartSlice";
 import { useAppDispatch } from "./useRedux";
 import { useEffect, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import type { Cart } from "@/types";
 import { getItem, setItem } from "@/lib/localStorage";
+import { useGetCartId } from "./useGetCartId";
+import { useGetCart } from "./useGetCart";
 
 export const useUserDataSync = () => {
   const { user, isLoaded } = useUser();
@@ -24,7 +24,7 @@ export const useUserDataSync = () => {
   }, [cartKey]);
 
   //Getting the cart from the local storage
-  const [cart] = useState(() => {
+  const [cartLocal] = useState(() => {
     const item = getItem(cartKey);
     return (
       (item as Cart) || {
@@ -37,32 +37,40 @@ export const useUserDataSync = () => {
   //set the cart from local storage to redux store.
   //the listener handles persistence now
   useEffect(() => {
-    dispatch(setCart(cart));
-  }, [cart, cartKey, dispatch]);
+    if (!isSignedIn) {
+      dispatch(setCart(cartLocal));
+    } else {
+      console.log(`user is signedIn ${user?.id}`);
+    }
+  }, [cartLocal, isSignedIn, dispatch]);
 
   //Run when signedIn is enabled
   const {
-    data: userId,
+    data: cartId,
     isLoading: isLoadingUser,
     isError: isErrorUser,
-  } = useGetOrCreateUser({ enabled: !!user?.id && isLoaded && !!isSignedIn });
+  } = useGetCartId(user, { enabled: !!user?.id && isLoaded && !!isSignedIn });
 
-  //Run when userId is enabled
+  //Run when cartId is enabled
   const {
-    data: cartId,
+    data: updatedCart,
     isLoading: isLoadingCart,
     isError: isErrorCart,
-  } = useGetOrCreateCart(userId!, { enabled: !!userId });
+    error: errorCart,
+  } = useGetCart(cartId!, cartLocal, {
+    enabled: !!cartId && isLoaded && !!isSignedIn,
+  });
 
-  //Sync the local data with the database when user signedIn
-  // useEffect(() => {
-  //   if (cartId) dispatch(setCartId(cartId));
-  // }, [cartId, dispatch]);
+  useEffect(() => {
+    if (updatedCart) dispatch(setCart(updatedCart));
+  }, [updatedCart, dispatch]);
 
   if (!isSignedIn) return { isLoading: false, isError: false };
 
+  if (isErrorCart) console.log(errorCart);
+
   return {
     isLoading: isLoadingUser || isLoadingCart,
-    isError: isErrorCart || isErrorUser,
+    isError: isErrorUser || isErrorCart,
   };
 };
