@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import type { CartItem } from "@/types";
-import { doesExistInCart } from "./doesExistInCart";
+import { compareCartItems } from "../../lib/compareCartItems";
 
 import type { Cart } from "@/types";
 
@@ -31,7 +31,7 @@ const cartSlice = createSlice({
         state.items.push(newItem);
       } else {
         const existingItem = state.items.find((item) =>
-          doesExistInCart(item, newItem),
+          compareCartItems(item, newItem),
         );
 
         if (existingItem) {
@@ -45,14 +45,14 @@ const cartSlice = createSlice({
     removeFromCart: (state, action: PayloadAction<CartItem>) => {
       const theItem = action.payload;
       state.items = state.items.filter(
-        (item) => !doesExistInCart(item, theItem),
+        (item) => !compareCartItems(item, theItem),
       );
     },
 
     updateCart: (state, action: PayloadAction<CartItem>) => {
       const theItem = action.payload;
       const index = state.items.findIndex((item) =>
-        doesExistInCart(item, theItem),
+        compareCartItems(item, theItem),
       );
 
       if (theItem.quantity <= 0) {

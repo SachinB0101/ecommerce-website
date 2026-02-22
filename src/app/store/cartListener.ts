@@ -4,6 +4,7 @@ import {
   removeFromCart,
   updateCart,
   clearCart,
+  setCart,
 } from "../../features/cart/cartSlice";
 import { setItem } from "@/lib/localStorage";
 import type { RootState } from "../store/store";
@@ -12,6 +13,7 @@ export const cartListener = createListenerMiddleware();
 
 cartListener.startListening({
   matcher: (action) =>
+    setCart.match(action) ||
     addToCart.match(action) ||
     removeFromCart.match(action) ||
     updateCart.match(action) ||
@@ -19,7 +21,7 @@ cartListener.startListening({
   effect: async (_, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     const cart = state.cart;
-    console.log("Cart changed:", cart); // 👈 move outside the if
+    // console.log(cart); //debuging
     if (cart.cartId) {
       setItem(cart.cartId, cart);
     }
