@@ -5,17 +5,27 @@ import {
   SignedIn,
   SignedOut,
   UserButton,
+  useClerk,
 } from "@clerk/clerk-react";
 import { Button } from "../ui/button";
-import { User, ShoppingBag, Package, Heart } from "lucide-react";
-import { setCartOpen } from "@/features/cart/cartSlice";
+import { User, ShoppingBag, Package, Heart, LogOut } from "lucide-react";
+import { clearCart, setCartOpen } from "@/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/useRedux";
 
 const Header = () => {
   const dispatch = useAppDispatch();
+  const { signOut } = useClerk();
   const cartItems = useAppSelector((state) => state.cart.items);
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
+  const handleSignOut = async () => {
+    console.log("signout");
+    dispatch(clearCart());
+    localStorage.clear();
+
+    await signOut();
+  };
 
   return (
     <header className="sticky top-0 z-40 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -59,10 +69,10 @@ const Header = () => {
             </Button>
 
             <UserButton
-              afterSignOutUrl="/"
               appearance={{
                 elements: {
                   avatarBox: "h-9 w-9",
+                  userButtonPopoverActionButton__signOut: "hidden",
                 },
               }}
             >
@@ -81,6 +91,11 @@ const Header = () => {
                   label="Wishlist"
                   labelIcon={<Heart className="h-4 w-4" />}
                   href="/wishlist"
+                />
+                <UserButton.Action
+                  label="sign Out"
+                  labelIcon={<LogOut className="h-4 w-4" />}
+                  onClick={handleSignOut}
                 />
               </UserButton.MenuItems>
             </UserButton>
