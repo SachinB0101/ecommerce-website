@@ -17,10 +17,10 @@ const getOrCreateUser = async (
     const { data: newUser, error: insertErrorUser } = await supabase
       .from("UsersTable")
       .insert({
-        clerk_user_id: user.id,
-        first_name: user.firstName,
-        last_name: user.lastName,
-        email: user.primaryEmailAddress?.emailAddress,
+        clerk_user_id: user!.id,
+        first_name: user!.firstName,
+        last_name: user!.lastName,
+        email: user!.primaryEmailAddress?.emailAddress,
       })
       .select("id")
       .single();
