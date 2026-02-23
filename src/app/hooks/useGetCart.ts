@@ -3,7 +3,14 @@ import { useQuery } from "@tanstack/react-query";
 import type { Cart, CartItem } from "@/types";
 import { compareCartItems } from "@/lib/compareCartItems";
 
-const transformDbData = (data): CartItem[] => {
+type DbCartItem = {
+  ProductsTable: { id: string };
+  quantity: number;
+  size: string;
+  color: string;
+};
+
+const transformDbData = (data: DbCartItem[]): CartItem[] => {
   const cartItems: CartItem[] = data.map((item) => ({
     productId: item.ProductsTable.id,
     quantity: item.quantity,
@@ -22,7 +29,7 @@ const getCart = async (cartId: string, cartLocal: Cart): Promise<Cart> => {
 
   if (error) throw error;
 
-  const DBCart = transformDbData(data);
+  const DBCart = transformDbData(data as unknown as DbCartItem[]);
 
   for (const localItem of cartLocal.items) {
     const existingItem = DBCart.find((x) => compareCartItems(x, localItem));
