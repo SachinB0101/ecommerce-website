@@ -13,10 +13,7 @@ const getOrCreateUser = async (
 
   if (error) throw `This is the error - ${error}`;
 
-  // console.log(existingUser)
-
   if (!existingUser) {
-    console.log("A new user");
     const { data: newUser, error: insertErrorUser } = await supabase
       .from("UsersTable")
       .insert({
@@ -36,14 +33,11 @@ const getOrCreateUser = async (
       .select("id")
       .single();
 
-    console.log(`The cartId = ${cartId}`);
-
     if (insertErrorUser || insertErrorCart)
       throw `${insertErrorUser} and ${insertErrorCart} `;
 
     return cartId.id;
   } else {
-    console.log("A existing user");
     const userId = existingUser.id;
     const { data: cartId, error } = await supabase
       .from("CartTable")
@@ -53,7 +47,6 @@ const getOrCreateUser = async (
 
     if (error) throw error;
 
-    console.log(`The cartId = ${cartId.id}`);
     return cartId.id;
   }
 };
@@ -62,8 +55,6 @@ export const useGetCartId = (
   user: NonNullable<ReturnType<typeof useUser>["user"]>,
   option = {},
 ) => {
-  // console.log(`inside useGetOrCreateUser - ${user}`);
-  // const { user } = useUser();
 
   return useQuery({
     queryKey: ["user", user?.id],
