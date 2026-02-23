@@ -15,52 +15,50 @@ const transformDbData = (data): CartItem[] => {
 };
 
 const getCart = async (cartId: string, cartLocal: Cart): Promise<Cart> => {
-  console.log(`this is cartLocal - ${cartLocal}`);
-  // Try to get existing cart with its items
   const { data, error } = await supabase
     .from("CartItemsTable")
-    .select(
-      `
-    size,
-    color,
-    quantity,
-    ProductsTable!inner(
-      id
-    )
-    `,
-    )
+    .select(`size, color, quantity, ProductsTable!inner(id)`)
     .eq("cart_id", cartId);
 
   if (error) throw error;
 
   const DBCart = transformDbData(data);
 
-  //Syncing the local cart and DBCart
-  //Taking the union of cartLocal and DBCart
-  const updatedCart: CartItem[] = [
-    ...DBCart,
-    ...cartLocal.items.filter(
-      (localItem) =>
-        !DBCart.some((DBItem) => compareCartItems(localItem, DBItem)),
-    ),
-  ];
+  for (const localItem of cartLocal.items) {
+    const existingItem = DBCart.find((x) => compareCartItems(x, localItem));
+    console.log("from useGetCart", existingItem);
 
-  //adding localCart items to the DB
-  for (const item of cartLocal.items) {
-    const { error } = await supabase.from("CartItemsTable").insert({
-      cart_id: cartId,
-      product_id: item.productId,
-      quantity: item.quantity,
-      size: item.size,
-      color: item.color,
-    });
+    if (existingItem) {
+      const { error } = await supabase
+        .from("CartItemsTable")
+        .update({ quantity: existingItem.quantity + localItem.quantity })
+        .eq("cart_id", cartId)
+        .eq("product_id", localItem.productId)
+        .eq("size", localItem.size)
+        .eq("color", localItem.color);
 
-    if (error) throw error;
+      if (error) throw error;
+
+      existingItem.quantity += localItem.quantity;
+    } else {
+      // Item is new — insert it
+      const { error } = await supabase.from("CartItemsTable").insert({
+        cart_id: cartId,
+        product_id: localItem.productId,
+        quantity: localItem.quantity,
+        size: localItem.size,
+        color: localItem.color,
+      });
+
+      if (error) throw error;
+
+      DBCart.push({ ...localItem });
+    }
   }
 
   return {
-    cartId: cartId,
-    items: updatedCart,
+    cartId,
+    items: DBCart,
     isOpen: false,
   };
 };

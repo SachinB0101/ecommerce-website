@@ -16,8 +16,6 @@ const Products = ({ categoryInfo }: ProductsProps) => {
     isError,
   } = useProducts(categoryInfo?.name);
 
-  // console.log(displayProducts)
-
   if (isLoading) {
     return (
       <div className="container py-12">
