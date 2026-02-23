@@ -49,7 +49,9 @@ export const useUserDataSync = () => {
     data: cartId,
     isLoading: isLoadingUser,
     isError: isErrorUser,
-  } = useGetCartId(user, { enabled: !!user?.id && isLoaded && !!isSignedIn });
+  } = useGetCartId(user ?? undefined, {
+    enabled: !!user?.id && isLoaded && !!isSignedIn,
+  });
 
   //Run when cartId is enabled
   const {
@@ -57,7 +59,7 @@ export const useUserDataSync = () => {
     isLoading: isLoadingCart,
     isError: isErrorCart,
     error: errorCart,
-  } = useGetCart(cartId!, cartLocal, {
+  } = useGetCart(cartId ?? "", cartLocal, {
     enabled: !!cartId && isLoaded && !!isSignedIn,
   });
 

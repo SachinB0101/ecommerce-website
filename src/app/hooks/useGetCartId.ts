@@ -3,12 +3,12 @@ import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/clerk-react";
 
 const getOrCreateUser = async (
-  user: NonNullable<ReturnType<typeof useUser>["user"]>,
+  user?: NonNullable<ReturnType<typeof useUser>["user"]> | null,
 ): Promise<string> => {
   const { data: existingUser, error } = await supabase
     .from("UsersTable")
     .select("id")
-    .eq("clerk_user_id", user.id)
+    .eq("clerk_user_id", user!.id)
     .maybeSingle();
 
   if (error) throw `This is the error - ${error}`;
@@ -52,10 +52,9 @@ const getOrCreateUser = async (
 };
 
 export const useGetCartId = (
-  user: NonNullable<ReturnType<typeof useUser>["user"]>,
+  user?: NonNullable<ReturnType<typeof useUser>["user"]> | null,
   option = {},
 ) => {
-
   return useQuery({
     queryKey: ["user", user?.id],
     queryFn: async () => getOrCreateUser(user),
