@@ -20,18 +20,18 @@ A modern, full-featured e-commerce web application built with React, TypeScript,
 
 ## 🧰 Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Framework | React 18 + Vite + TypeScript |
-| Auth | Clerk |
-| Database | Supabase (client-side SDK) |
-| State Management | Redux Toolkit + React Redux |
-| Server Caching | TanStack React Query |
-| UI Components | shadcn/ui + Radix UI |
-| Styling | Tailwind CSS + Framer Motion |
-| Routing | React Router DOM v7 |
-| Deployment | AWS S3 (static hosting) |
-| CI/CD | GitHub Actions |
+| Layer            | Technology                   |
+| ---------------- | ---------------------------- |
+| Framework        | React 18 + Vite + TypeScript |
+| Auth             | Clerk                        |
+| Database         | Supabase (client-side SDK)   |
+| State Management | Redux Toolkit + React Redux  |
+| Server Caching   | TanStack React Query         |
+| UI Components    | shadcn/ui + Radix UI         |
+| Styling          | Tailwind CSS + Framer Motion |
+| Routing          | React Router DOM v7          |
+| Deployment       | AWS S3 (static hosting)      |
+| CI/CD            | GitHub Actions               |
 
 ---
 
@@ -108,6 +108,7 @@ VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
 ```
 
 You can find these values in:
+
 - **Clerk:** Dashboard → Your App → API Keys
 - **Supabase:** Project Settings → API
 
@@ -192,13 +193,13 @@ The app will be available at `http://localhost:5173`.
 
 ## 📦 Available Scripts
 
-| Script | Description |
-|---|---|
-| `npm run dev` | Start the local development server |
-| `npm run build` | Type-check and build for production |
-| `npm run preview` | Preview the production build locally |
-| `npm run lint` | Run ESLint across the project |
-| `npm run seed` | Seed the Supabase database with product data |
+| Script            | Description                                  |
+| ----------------- | -------------------------------------------- |
+| `npm run dev`     | Start the local development server           |
+| `npm run build`   | Type-check and build for production          |
+| `npm run preview` | Preview the production build locally         |
+| `npm run lint`    | Run ESLint across the project                |
+| `npm run seed`    | Seed the Supabase database with product data |
 
 ---
 
@@ -243,9 +244,3 @@ Authentication is handled entirely by [Clerk](https://clerk.com/). The `<ClerkPr
 - **CartItemsTable** — Individual line items in a cart, with quantity, size, and color
 
 Data fetching is cached and managed using **TanStack React Query**, reducing redundant network requests and keeping the UI snappy.
-
----
-
-## 📄 License
-
-This project is open source and available under the [MIT License](LICENSE).
