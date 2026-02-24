@@ -30,9 +30,10 @@ const addItemToDB = async (cartId: string, item: CartItem) => {
 
   if (fetchError) throw fetchError;
 
-  // console.log("from useAddItemToDB", existing);
+  console.log("from useAddItemToDB", existing);
 
   if (existing.length > 0) {
+    console.log("inside if");
     const { error } = await buildQuery(
       supabase
         .from("CartItemsTable")
@@ -43,6 +44,7 @@ const addItemToDB = async (cartId: string, item: CartItem) => {
 
     if (error) throw error;
   } else {
+    console.log("inside else");
     const { error } = await supabase.from("CartItemsTable").insert({
       cart_id: cartId,
       product_id: item.productId,
