@@ -15,13 +15,13 @@ export const Cart = () => {
   const { isSignedIn } = useAuth();
   const dispatch = useAppDispatch();
   const { cartId, items, isOpen } = useAppSelector((state) => state.cart);
-  const {
-    data: cartItemsWithProducts,
-    isLoading,
-    isError,
-  } = useGetCartProducts(cartId, items, {
-    enabled: !!user?.id && !!isSignedIn,
-  });
+  const { data: cartItemsWithProducts, isError } = useGetCartProducts(
+    cartId,
+    items,
+    {
+      enabled: !!user?.id && !!isSignedIn,
+    },
+  );
 
   return (
     <Sheet open={isOpen} onOpenChange={(open) => dispatch(setCartOpen(open))}>
