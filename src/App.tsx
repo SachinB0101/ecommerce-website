@@ -23,6 +23,7 @@ const SingleProduct = lazy(() => import("./pages/SingleProduct"));
 import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { Cart } from "./components/cart/Cart";
 import SyncUserData from "./components/auth/SyncUserData";
+import ComingSoon from "./pages/ComingSoonPage";
 
 const WhishlistPage = lazy(() => import("./pages/WhishlistPage"));
 const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
@@ -35,9 +36,9 @@ if (!CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY in .env");
 }
 
-//Adding staleTime for every query. 
+//Adding staleTime for every query.
 // Might chanage it later and use provider for real time update
-// or a custom stateTime based on a query 
+// or a custom stateTime based on a query
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
@@ -78,13 +79,19 @@ const router = createBrowserRouter([
       { path: "categories/:category", element: <CategoriesPage /> },
       { path: "products", element: <ProductsPage /> },
       { path: "products/:id", element: <SingleProduct /> },
+      { path: "shipping", element: <ComingSoon /> },
+      { path: "size-guide", element: <ComingSoon /> },
+      { path: "privacy", element: <ComingSoon /> },
+      { path: "sustainability", element: <ComingSoon /> },
+      { path: "terms", element: <ComingSoon /> },
+      { path: "faqs", element: <ComingSoon /> },
       {
         element: <ProtectedRoute />,
         children: [
-          { path: "wishlist", element: <WhishlistPage /> },
-          { path: "checkout", element: <CheckoutPage /> },
-          { path: "profile", element: <ProfilePage /> },
-          { path: "orders", element: <OrderHistoryPage /> },
+          { path: "wishlist", element: <ComingSoon /> },
+          { path: "checkout", element: <ComingSoon /> },
+          { path: "profile", element: <ComingSoon /> },
+          { path: "orders", element: <ComingSoon /> },
         ],
       },
     ],

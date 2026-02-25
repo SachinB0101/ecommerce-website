@@ -32,7 +32,7 @@ const Header = () => {
       <div className="container flex h-16 items-center justify-between">
         <Link to="/" className="flex items-center space-x-2">
           <span className="font-display text-2xl font-bold tracking-tight">
-            MODERN SHOP
+            MODIQUE
           </span>
         </Link>
         <Navbar />
