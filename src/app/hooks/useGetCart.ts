@@ -47,7 +47,7 @@ const getCart = async (cartId: string, cartLocal: Cart): Promise<Cart> => {
 
   if (error) throw error;
 
-  const DBCart = transformDbData(data as unknown as CartItem[]);
+  const DBCart = transformDbData(data as unknown as RawCartItem[]);
 
   for (const localItem of cartLocal.items) {
     const existingItem = DBCart.find((x) => compareCartItems(x, localItem));
