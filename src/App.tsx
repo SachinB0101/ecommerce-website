@@ -25,10 +25,11 @@ import { Cart } from "./components/cart/Cart";
 import SyncUserData from "./components/auth/SyncUserData";
 import ComingSoon from "./pages/ComingSoonPage";
 
-const WhishlistPage = lazy(() => import("./pages/WhishlistPage"));
-const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
-const ProfilePage = lazy(() => import("./pages/ProfilePage"));
-const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
+//Going to uncomment these when finished
+// const WhishlistPage = lazy(() => import("./pages/WhishlistPage"));
+// const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
+// const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+// const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
 
 //Clerk authentication
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
