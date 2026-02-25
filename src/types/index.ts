@@ -15,6 +15,8 @@ export interface Product {
   material?: string;
 }
 
+export type CartItemProduct = Omit<Product, "sizes" | "colors">;
+
 export interface Category {
   id: string;
   name: string;
@@ -29,14 +31,10 @@ export interface Cart {
 }
 
 export interface CartItem {
-  productId: string;
+  product: CartItemProduct;
   quantity: number;
   size?: string;
   color?: string;
-}
-
-export interface CartItemWithProduct extends CartItem {
-  product: Product;
 }
 
 export interface User {
