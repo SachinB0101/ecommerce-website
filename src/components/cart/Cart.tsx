@@ -21,7 +21,7 @@ export const Cart = () => {
   const { isOpen, items } = useAppSelector((state) => state.cart);
 
   const subtotal = items.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
+    (acc, item) => acc + (item.product?.price ?? 0) * item.quantity,
     0,
   );
 
@@ -53,7 +53,7 @@ export const Cart = () => {
               <div className="space-y-4">
                 {items.map((item, index) => (
                   <motion.div
-                    key={`${item.product.id}-${item.size}-${item.color}`}
+                    key={`${item.product?.id}-${item.size}-${item.color}`}
                     initial={{ opacity: 0, x: -20 }}
                     animate={{ opacity: 1, x: 0 }}
                     transition={{ delay: index * 0.1 }}
@@ -61,8 +61,8 @@ export const Cart = () => {
                   >
                     <div className="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md border">
                       <img
-                        src={item.product.image}
-                        alt={item.product.name}
+                        src={item.product?.image}
+                        alt={item.product?.name}
                         className="h-full w-full object-cover"
                       />
                     </div>
@@ -71,7 +71,7 @@ export const Cart = () => {
                       <div className="flex justify-between">
                         <div>
                           <h4 className="font-medium text-sm">
-                            {item.product.name}
+                            {item.product?.name}
                           </h4>
                           <p className="text-xs text-muted-foreground mt-1">
                             {item.size && <span>Size: {item.size}</span>}
@@ -126,7 +126,7 @@ export const Cart = () => {
                           </Button>
                         </div>
                         <p className="font-semibold">
-                          {formatPrice(item.product.price * item.quantity)}
+                          {formatPrice(item.product?.price * item.quantity)}
                         </p>
                       </div>
                     </div>
