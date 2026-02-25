@@ -64,7 +64,7 @@ const SingleProduct = () => {
 
   const handleAddToCart = () => {
     const newItem: CartItem = {
-      productId: product.id,
+      product: product,
       quantity: 1,
       size: selectedSize || undefined,
       color: selectedColor || undefined,

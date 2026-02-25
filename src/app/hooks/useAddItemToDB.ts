@@ -4,7 +4,7 @@ import { supabase } from "@/supabaseClient";
 import type { CartItem } from "@/types";
 
 const buildQuery = (query: any, cartId: string, item: CartItem) => {
-  query = query.eq("cart_id", cartId).eq("product_id", Number(item.productId));
+  query = query.eq("cart_id", cartId).eq("product_id", Number(item.product.id));
 
   if (item.size === null || item.size === undefined) {
     query = query.is("size", null);
@@ -45,7 +45,7 @@ const addItemToDB = async (cartId: string, item: CartItem) => {
   } else {
     const { error } = await supabase.from("CartItemsTable").insert({
       cart_id: cartId,
-      product_id: item.productId,
+      product_id: item.product.id,
       quantity: item.quantity,
       size: item.size,
       color: item.color,

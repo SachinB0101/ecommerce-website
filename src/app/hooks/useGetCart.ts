@@ -1,35 +1,53 @@
 import { supabase } from "@/supabaseClient";
 import { useQuery } from "@tanstack/react-query";
-import type { Cart, CartItem } from "@/types";
+import type { Cart, CartItem, CartItemProduct } from "@/types";
 import { compareCartItems } from "@/lib/compareCartItems";
 
-type DbCartItem = {
-  ProductsTable: { id: string };
+interface RawCartItem {
   quantity: number;
-  size: string;
-  color: string;
-};
+  size?: string;
+  color?: string;
+  ProductsTable: CartItemProduct;
+}
 
-const transformDbData = (data: DbCartItem[]): CartItem[] => {
-  const cartItems: CartItem[] = data.map((item) => ({
-    productId: item.ProductsTable.id,
+const transformDbData = (data: RawCartItem[]): CartItem[] => {
+  return data.map((item) => ({
+    product: item.ProductsTable,
     quantity: item.quantity,
     size: item.size,
     color: item.color,
   }));
-
-  return cartItems;
 };
 
 const getCart = async (cartId: string, cartLocal: Cart): Promise<Cart> => {
   const { data, error } = await supabase
     .from("CartItemsTable")
-    .select(`size, color, quantity, ProductsTable!inner(id)`)
+    .select(
+      `
+    size,
+    color,
+    quantity,
+    ProductsTable!inner(
+      id,
+      name,
+      description,
+      price,
+      category,
+      image,
+      images,
+      inStock,
+      rating,
+      reviews,
+      brand,
+      material
+    )
+  `,
+    )
     .eq("cart_id", cartId);
 
   if (error) throw error;
 
-  const DBCart = transformDbData(data as unknown as DbCartItem[]);
+  const DBCart = transformDbData(data as unknown as CartItem[]);
 
   for (const localItem of cartLocal.items) {
     const existingItem = DBCart.find((x) => compareCartItems(x, localItem));
@@ -40,7 +58,7 @@ const getCart = async (cartId: string, cartLocal: Cart): Promise<Cart> => {
         .from("CartItemsTable")
         .update({ quantity: existingItem.quantity + localItem.quantity })
         .eq("cart_id", cartId)
-        .eq("product_id", localItem.productId)
+        .eq("product_id", localItem.product.id)
         .eq("size", localItem.size)
         .eq("color", localItem.color);
 
@@ -51,7 +69,7 @@ const getCart = async (cartId: string, cartLocal: Cart): Promise<Cart> => {
       // Item is new — insert it
       const { error } = await supabase.from("CartItemsTable").insert({
         cart_id: cartId,
-        product_id: localItem.productId,
+        product_id: localItem.product.id,
         quantity: localItem.quantity,
         size: localItem.size,
         color: localItem.color,
