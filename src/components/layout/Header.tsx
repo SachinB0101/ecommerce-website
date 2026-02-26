@@ -8,16 +8,33 @@ import {
   useClerk,
 } from "@clerk/clerk-react";
 import { Button } from "../ui/button";
-import { User, ShoppingBag, Package, Heart, LogOut } from "lucide-react";
+import {
+  User,
+  ShoppingBag,
+  Package,
+  Heart,
+  LogOut,
+  Menu,
+  X,
+} from "lucide-react";
 import { clearCart, setCartOpen } from "@/features/cart/cartSlice";
 import { useAppDispatch, useAppSelector } from "@/app/hooks/useRedux";
+import { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 const Header = () => {
   const dispatch = useAppDispatch();
   const { signOut } = useClerk();
   const cartItems = useAppSelector((state) => state.cart.items);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  const navLinks = [
+    { to: "/products/women", label: "Women" },
+    { to: "/products/men", label: "Men" },
+    { to: "/products/accessories", label: "Accessories" },
+    { to: "/products/home", label: "Home" },
+  ];
 
   const handleSignOut = async () => {
     console.log("signout");
@@ -116,8 +133,68 @@ const Header = () => {
               </span>
             )}
           </Button>
+
+          <Button
+            variant="ghost"
+            size="icon"
+            className="md:hidden"
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          >
+            {mobileMenuOpen ? (
+              <X className="h-5 w-5" />
+            ) : (
+              <Menu className="h-5 w-5" />
+            )}
+          </Button>
         </div>
       </div>
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, height: 0 }}
+            animate={{ opacity: 1, height: "auto" }}
+            exit={{ opacity: 0, height: 0 }}
+            className="md:hidden border-t"
+          >
+            <nav className="container flex flex-col space-y-4 py-4">
+              {navLinks.map((link) => (
+                <Link
+                  key={link.to}
+                  to={link.to}
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {link.label}
+                </Link>
+              ))}
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <Button variant="outline" className="w-full justify-start">
+                    <User className="mr-2 h-4 w-4" />
+                    Sign In
+                  </Button>
+                </SignInButton>
+              </SignedOut>
+              <SignedIn>
+                <Link
+                  to="/profile"
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Profile
+                </Link>
+                <Link
+                  to="/orders"
+                  className="text-sm font-medium transition-colors hover:text-primary"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  Orders
+                </Link>
+              </SignedIn>
+            </nav>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </header>
   );
 };
