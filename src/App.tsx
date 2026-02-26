@@ -3,6 +3,7 @@ import { ClerkProvider } from "@clerk/clerk-react";
 import { Provider } from "react-redux";
 import { store } from "./app/store/store";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { Toaster } from "sonner";
 import {
   Outlet,
   RouterProvider,
@@ -47,6 +48,8 @@ const queryClient = new QueryClient({
     },
   },
 });
+
+<Toaster richColors position="top-right" />;
 
 function AppLayout() {
   return (

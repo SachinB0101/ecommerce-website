@@ -4,6 +4,7 @@ import type { Cart, CartItem, CartItemProduct } from "@/types";
 import { compareCartItems } from "@/lib/compareCartItems";
 
 interface RawCartItem {
+  id: string;
   quantity: number;
   size?: string;
   color?: string;
@@ -12,6 +13,7 @@ interface RawCartItem {
 
 const transformDbData = (data: RawCartItem[]): CartItem[] => {
   return data.map((item) => ({
+    id: item.id,
     product: item.ProductsTable,
     quantity: item.quantity,
     size: item.size,
@@ -24,60 +26,62 @@ const getCart = async (cartId: string, cartLocal: Cart): Promise<Cart> => {
     .from("CartItemsTable")
     .select(
       `
-    size,
-    color,
-    quantity,
-    ProductsTable!inner(
       id,
-      name,
-      description,
-      price,
-      category,
-      image,
-      images,
-      inStock,
-      rating,
-      reviews,
-      brand,
-      material
-    )
-  `,
+      size,
+      color,
+      quantity,
+      ProductsTable!inner(
+        id,
+        name,
+        description,
+        price,
+        category,
+        image,
+        images,
+        inStock,
+        rating,
+        reviews,
+        brand,
+        material
+      )
+    `,
     )
     .eq("cart_id", cartId);
 
-  if (error) throw error;
+  if (error) console.log(`the error is ${error}`);
 
   const DBCart = transformDbData(data as unknown as RawCartItem[]);
 
   for (const localItem of cartLocal.items) {
     const existingItem = DBCart.find((x) => compareCartItems(x, localItem));
-    console.log("from useGetCart", existingItem);
 
     if (existingItem) {
       const { error } = await supabase
         .from("CartItemsTable")
         .update({ quantity: existingItem.quantity + localItem.quantity })
-        .eq("cart_id", cartId)
-        .eq("product_id", localItem.product.id)
-        .eq("size", localItem.size)
-        .eq("color", localItem.color);
+        .eq("id", existingItem.id);
 
       if (error) throw error;
 
       existingItem.quantity += localItem.quantity;
     } else {
-      // Item is new — insert it
-      const { error } = await supabase.from("CartItemsTable").insert({
-        cart_id: cartId,
-        product_id: localItem.product.id,
-        quantity: localItem.quantity,
-        size: localItem.size,
-        color: localItem.color,
-      });
+      // Insert WITHOUT passing id — let Supabase auto-generate it
+      const { data: insertedItem, error } = await supabase
+        .from("CartItemsTable")
+        .insert({
+          cart_id: cartId,
+          product_id: localItem.product.id,
+          quantity: localItem.quantity,
+          size: localItem.size,
+          color: localItem.color,
+        })
+        .select("id") // ✅ get back the real DB id
+        .single();
 
       if (error) throw error;
 
-      DBCart.push({ ...localItem });
+     
+      DBCart.push({ ...localItem, id: insertedItem.id });
     }
   }
 

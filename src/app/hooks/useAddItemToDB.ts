@@ -44,6 +44,7 @@ const addItemToDB = async (cartId: string, item: CartItem) => {
     if (error) throw error;
   } else {
     const { error } = await supabase.from("CartItemsTable").insert({
+      id: item.id,
       cart_id: cartId,
       product_id: item.product.id,
       quantity: item.quantity,
