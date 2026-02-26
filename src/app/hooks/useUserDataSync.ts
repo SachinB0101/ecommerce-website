@@ -13,17 +13,15 @@ export const useUserDataSync = () => {
   const { isSignedIn } = useAuth();
   const dispatch = useAppDispatch();
 
-  //Getting the cartKey from local storage
   const [cartKey] = useState(() => {
     const item = getItem("cart-key");
     return (item as string) || uuidv4().toString();
   });
-  //Setting the cartKey from local storage
+
   useEffect(() => {
     setItem("cart-key", cartKey);
   }, [cartKey]);
 
-  //Getting the cart from the local storage
   const [cartLocal] = useState(() => {
     const item = getItem(cartKey);
     return (
@@ -34,17 +32,13 @@ export const useUserDataSync = () => {
       }
     );
   });
-  //set the cart from local storage to redux store.
-  //the listener handles persistence now
+
   useEffect(() => {
     if (!isSignedIn) {
       dispatch(setCart(cartLocal));
-    } else {
-      console.log(`user is signedIn ${user?.id}`);
     }
   }, [cartLocal, isSignedIn, dispatch]);
 
-  //Run when signedIn is enabled
   const {
     data: cartId,
     isLoading: isLoadingUser,
@@ -53,7 +47,6 @@ export const useUserDataSync = () => {
     enabled: !!user?.id && isLoaded && !!isSignedIn,
   });
 
-  //Run when cartId is enabled
   const {
     data: updatedCart,
     isLoading: isLoadingCart,
@@ -64,7 +57,12 @@ export const useUserDataSync = () => {
   });
 
   useEffect(() => {
-    if (updatedCart) dispatch(setCart(updatedCart));
+    if (updatedCart) {
+      dispatch(setCart(updatedCart));
+
+      // Clear the stale guest cart after syncing
+      setItem(cartKey, { cartId: cartKey, items: [], isOpen: false });
+    }
   }, [updatedCart, dispatch]);
 
   if (!isSignedIn) return { isLoading: false, isError: false };

@@ -17,7 +17,7 @@ const cartSlice = createSlice({
     setCart: (state, action: PayloadAction<Cart>) => {
       state.cartId = action.payload.cartId;
       state.items = action.payload.items;
-      state.isOpen = action.payload.isOpen;
+      // state.isOpen = action.payload.isOpen; //The server was changing the isOpen state. Fixed it
     },
 
     setCartId: (state, action: PayloadAction<string>) => {

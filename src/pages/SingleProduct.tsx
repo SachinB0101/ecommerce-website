@@ -19,6 +19,7 @@ import ErrorPage from "./ErrorPage";
 import { useAddItemToDB } from "@/app/hooks/useAddItemToDB";
 import { useAuth } from "@clerk/clerk-react";
 import type { CartItem } from "@/types";
+import { v4 as uuidv4 } from "uuid";
 
 const SingleProduct = () => {
   const { isSignedIn } = useAuth();
@@ -64,6 +65,7 @@ const SingleProduct = () => {
 
   const handleAddToCart = () => {
     const newItem: CartItem = {
+      id: uuidv4().toString(),
       product: product,
       quantity: 1,
       size: selectedSize || undefined,

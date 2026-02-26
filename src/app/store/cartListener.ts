@@ -21,7 +21,7 @@ cartListener.startListening({
   effect: async (_, listenerApi) => {
     const state = listenerApi.getState() as RootState;
     const cart = state.cart;
-    // console.log(cart); //debuging
+    console.log(cart); //debuging
     if (cart.cartId) {
       setItem(cart.cartId, cart);
     }

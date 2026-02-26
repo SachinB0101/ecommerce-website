@@ -11,9 +11,10 @@ const getOrCreateUser = async (
     .eq("clerk_user_id", user!.id)
     .maybeSingle();
 
-  if (error) throw `This is the error - ${error}`;
+  if (error) throw error;
 
   if (!existingUser) {
+    // New user — create user row
     const { data: newUser, error: insertErrorUser } = await supabase
       .from("UsersTable")
       .insert({
@@ -25,29 +26,40 @@ const getOrCreateUser = async (
       .select("id")
       .single();
 
-    const { data: cartId, error: insertErrorCart } = await supabase
+    if (insertErrorUser) throw insertErrorUser; 
+
+    // Then create cart row
+    const { data: newCart, error: insertErrorCart } = await supabase
       .from("CartTable")
-      .insert({
-        user_id: newUser?.id,
-      })
+      .insert({ user_id: newUser.id })
       .select("id")
       .single();
 
-    if (insertErrorUser || insertErrorCart)
-      throw `${insertErrorUser} and ${insertErrorCart} `;
+    if (insertErrorCart) throw insertErrorCart; 
 
-    return cartId.id;
+    return newCart.id;
   } else {
-    const userId = existingUser.id;
-    const { data: cartId, error } = await supabase
+    // Existing user — find their cart
+    const { data: cartRow, error: cartError } = await supabase
       .from("CartTable")
       .select("id")
-      .eq("user_id", userId)
-      .single();
+      .eq("user_id", existingUser.id)
+      .maybeSingle();
 
-    if (error) throw error;
+    if (cartError) throw cartError;
 
-    return cartId.id;
+    if (!cartRow) {
+      // Defensive: user exists but cart was never created (current broken state)
+      const { data: newCart, error: insertError } = await supabase
+        .from("CartTable")
+        .insert({ user_id: existingUser.id })
+        .select("id")
+        .single();
+      if (insertError) throw insertError;
+      return newCart.id;
+    }
+
+    return cartRow.id;
   }
 };
 

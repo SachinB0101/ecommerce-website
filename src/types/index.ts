@@ -31,6 +31,7 @@ export interface Cart {
 }
 
 export interface CartItem {
+  id: string;
   product: CartItemProduct;
   quantity: number;
   size?: string;
