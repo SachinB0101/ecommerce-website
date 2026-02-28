@@ -25,6 +25,7 @@ import ProtectedRoute from "./components/auth/ProtectedRoute";
 import { Cart } from "./components/cart/Cart";
 import SyncUserData from "./components/auth/SyncUserData";
 import ComingSoon from "./pages/ComingSoonPage";
+import { CheckoutPage } from "./pages/CheckoutPage";
 
 //Going to uncomment these when finished
 // const WhishlistPage = lazy(() => import("./pages/WhishlistPage"));
@@ -83,6 +84,7 @@ const router = createBrowserRouter([
       { path: "categories/:category", element: <CategoriesPage /> },
       { path: "products", element: <ProductsPage /> },
       { path: "products/:id", element: <SingleProduct /> },
+      { path: "checkout", element: <CheckoutPage /> },
       { path: "shipping", element: <ComingSoon /> },
       { path: "size-guide", element: <ComingSoon /> },
       { path: "privacy", element: <ComingSoon /> },
@@ -93,7 +95,6 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           { path: "wishlist", element: <ComingSoon /> },
-          { path: "checkout", element: <ComingSoon /> },
           { path: "profile", element: <ComingSoon /> },
           { path: "orders", element: <ComingSoon /> },
         ],

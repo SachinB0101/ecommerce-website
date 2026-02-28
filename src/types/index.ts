@@ -71,3 +71,18 @@ export interface WishlistItem {
   productId: string;
   addedAt: string;
 }
+
+export interface Order {
+  id: string;
+  userId: string;
+  items: CartItem[];
+  shippingAddress: Address;
+  paymentMethod: PaymentMethod;
+  subtotal: number;
+  shipping: number;
+  tax: number;
+  total: number;
+  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
+  createdAt: string;
+  updatedAt: string;
+}
