@@ -23,7 +23,19 @@ export function CheckoutPage() {
   const { items } = useAppSelector((state) => state.cart);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const addresses: Address[] | null = [];
+  const addresses: Address[] = [
+    {
+      id: "1",
+      fullName: "John Doe",
+      addressLine1: "123 Main Street",
+      addressLine2: "Apt 4B",
+      city: "New York",
+      state: "NY",
+      zipCode: "10001",
+      country: "United States",
+      isDefault: true,
+    },
+  ];
   const paymentMethods: PaymentMethod[] = [];
 
   const subtotal = items.reduce(
@@ -69,23 +81,10 @@ export function CheckoutPage() {
           {/* Shipping Address */}
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <MapPin className="h-5 w-5" />
-                  Shipping Address
-                </CardTitle>
-                <Button
-                  asChild
-                  variant="ghost"
-                  size="sm"
-                  className="text-muted-foreground hover:text-foreground gap-1.5"
-                >
-                  <Link to="/profile">
-                    <Pencil className="h-3.5 w-3.5" />
-                    Edit
-                  </Link>
-                </Button>
-              </div>
+              <CardTitle className="flex items-center gap-2">
+                <MapPin className="h-5 w-5" />
+                Shipping Address
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {addresses.length === 0 ? (
@@ -99,42 +98,56 @@ export function CheckoutPage() {
                   </Button>
                 </div>
               ) : (
-                addresses.map((address) => (
-                  <div
-                    key={address.id}
-                    onClick={() => console.log("button got clicked")}
-                    className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                      true
-                        ? "border-primary bg-primary/5"
-                        : "hover:border-muted-foreground/50"
-                    }`}
-                  >
-                    <div className="flex items-start justify-between">
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-2">
-                          <p className="font-medium">{address.fullName}</p>
-                          {address.isDefault && (
-                            <Badge variant="secondary" className="text-xs">
-                              Default
-                            </Badge>
-                          )}
+                <>
+                  {addresses.map((address) => (
+                    <div
+                      key={address.id}
+                      onClick={() => console.log("button got clicked")}
+                      className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                        true
+                          ? "border-primary bg-primary/5"
+                          : "hover:border-muted-foreground/50"
+                      }`}
+                    >
+                      <div className="flex items-start justify-between">
+                        <div className="space-y-1">
+                          <div className="flex items-center gap-2">
+                            <p className="font-medium">{address.fullName}</p>
+                            {address.isDefault && (
+                              <Badge variant="secondary" className="text-xs">
+                                Default
+                              </Badge>
+                            )}
+                          </div>
+                          <p className="text-sm text-muted-foreground">
+                            {address.addressLine1}
+                            {address.addressLine2 &&
+                              `, ${address.addressLine2}`}
+                          </p>
+                          <p className="text-sm text-muted-foreground">
+                            {address.city}, {address.state} {address.zipCode}
+                          </p>
                         </div>
-                        <p className="text-sm text-muted-foreground">
-                          {address.addressLine1}
-                          {address.addressLine2 && `, ${address.addressLine2}`}
-                        </p>
-                        <p className="text-sm text-muted-foreground">
-                          {address.city}, {address.state} {address.zipCode}
-                        </p>
+                        {true && (
+                          <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
+                            <div className="h-2 w-2 rounded-full bg-white" />
+                          </div>
+                        )}
                       </div>
-                      {true && (
-                        <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
-                          <div className="h-2 w-2 rounded-full bg-white" />
-                        </div>
-                      )}
                     </div>
-                  </div>
-                ))
+                  ))}
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="gap-1.5"
+                  >
+                    <Link to="/profile">
+                      <Pencil className="h-3.5 w-3.5" />
+                      Edit Address
+                    </Link>
+                  </Button>
+                </>
               )}
             </CardContent>
           </Card>
@@ -142,23 +155,10 @@ export function CheckoutPage() {
           {/* Payment Method */}
           <Card>
             <CardHeader>
-              <div className="flex items-center justify-between">
-                <CardTitle className="flex items-center gap-2">
-                  <CreditCard className="h-5 w-5" />
-                  Payment Method
-                </CardTitle>
-                <Button
-                  asChild
-                  variant="ghost"
-                  size="sm"
-                  className="text-muted-foreground hover:text-foreground gap-1.5"
-                >
-                  <Link to="/profile">
-                    <Pencil className="h-3.5 w-3.5" />
-                    Edit
-                  </Link>
-                </Button>
-              </div>
+              <CardTitle className="flex items-center gap-2">
+                <CreditCard className="h-5 w-5" />
+                Payment Method
+              </CardTitle>
             </CardHeader>
             <CardContent className="space-y-3">
               {paymentMethods.length === 0 ? (
@@ -172,43 +172,56 @@ export function CheckoutPage() {
                   </Button>
                 </div>
               ) : (
-                paymentMethods.map((pm) => (
-                  <div
-                    key={pm.id}
-                    onClick={() => console.log("button clicked")}
-                    className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                      true
-                        ? "border-primary bg-primary/5"
-                        : "hover:border-muted-foreground/50"
-                    }`}
-                  >
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <CreditCard className="h-5 w-5 text-muted-foreground" />
-                        <div>
-                          <div className="flex items-center gap-2">
-                            <p className="font-medium">
-                              {pm.cardType} •••• {pm.lastFour}
+                <>
+                  {paymentMethods.map((pm) => (
+                    <div
+                      key={pm.id}
+                      onClick={() => console.log("button clicked")}
+                      className={`border rounded-lg p-4 cursor-pointer transition-colors ${
+                        true
+                          ? "border-primary bg-primary/5"
+                          : "hover:border-muted-foreground/50"
+                      }`}
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center gap-3">
+                          <CreditCard className="h-5 w-5 text-muted-foreground" />
+                          <div>
+                            <div className="flex items-center gap-2">
+                              <p className="font-medium">
+                                {pm.cardType} •••• {pm.lastFour}
+                              </p>
+                              {pm.isDefault && (
+                                <Badge variant="secondary" className="text-xs">
+                                  Default
+                                </Badge>
+                              )}
+                            </div>
+                            <p className="text-sm text-muted-foreground">
+                              Expires {pm.expiryMonth}/{pm.expiryYear}
                             </p>
-                            {pm.isDefault && (
-                              <Badge variant="secondary" className="text-xs">
-                                Default
-                              </Badge>
-                            )}
                           </div>
-                          <p className="text-sm text-muted-foreground">
-                            Expires {pm.expiryMonth}/{pm.expiryYear}
-                          </p>
                         </div>
+                        {true && (
+                          <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
+                            <div className="h-2 w-2 rounded-full bg-white" />
+                          </div>
+                        )}
                       </div>
-                      {true && (
-                        <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
-                          <div className="h-2 w-2 rounded-full bg-white" />
-                        </div>
-                      )}
                     </div>
-                  </div>
-                ))
+                  ))}
+                  <Button
+                    asChild
+                    variant="outline"
+                    size="sm"
+                    className="gap-1.5"
+                  >
+                    <Link to="/profile">
+                      <Pencil className="h-3.5 w-3.5" />
+                      Edit Payment
+                    </Link>
+                  </Button>
+                </>
               )}
             </CardContent>
           </Card>
@@ -216,13 +229,13 @@ export function CheckoutPage() {
 
         {/* Right Column - Order Summary */}
         <div className="lg:col-span-1">
-          <Card className="sticky top-20 flex flex-col max-h-[calc(100vh-6rem)]">
+          <Card className="sticky top-20 flex flex-col max-h-[620px]">
             <CardHeader className="flex-shrink-0">
               <CardTitle>Order Summary</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col flex-1 min-h-0 space-y-4">
               {/* Scrollable items list */}
-              <div className="overflow-y-auto flex-1 min-h-0 -mr-2 pr-2 space-y-3">
+              <div className="overflow-y-scroll flex-1 min-h-0 -mr-2 pr-2 space-y-3">
                 {items.map((item) => (
                   <div
                     key={`${item.product.id}-${item.size}-${item.color}`}
