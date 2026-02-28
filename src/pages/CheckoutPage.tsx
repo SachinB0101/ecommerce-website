@@ -1,11 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { useUser } from "@clerk/clerk-react";
+// import { useUser } from "@clerk/clerk-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
-import type { Order, Address, PaymentMethod } from "@/types";
+import type { Address, PaymentMethod } from "@/types";
 import {
   MapPin,
   CreditCard,
@@ -14,12 +14,12 @@ import {
   Pencil,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useAppDispatch, useAppSelector } from "@/app/hooks/useRedux";
+import { useAppSelector } from "@/app/hooks/useRedux";
 
 export function CheckoutPage() {
   const navigate = useNavigate();
-  const { user } = useUser();
-  const dispatch = useAppDispatch();
+  // const { user } = useUser();
+  // const dispatch = useAppDispatch();
   const { items } = useAppSelector((state) => state.cart);
   const [isProcessing, setIsProcessing] = useState(false);
 
