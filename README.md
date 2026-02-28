@@ -2,7 +2,7 @@
 
 A modern, full-featured e-commerce web application built with React, TypeScript, and Vite. Modique offers product browsing, a shopping cart experience, and secure user authentication — all deployed on AWS S3 with a fully automated CI/CD pipeline.
 
-**🔗 Live Site:** [modique.madebysachin.com](http://modique.madebysachin.com.s3-website-us-east-1.amazonaws.com/)
+**🔗 Live Site:** [modique.madebysachin.com](https://d2okbcupv7ankv.cloudfront.net/)
 **📁 GitHub:** [SachinB0101/ecommerce-website](https://github.com/SachinB0101/ecommerce-website)
 
 ---
