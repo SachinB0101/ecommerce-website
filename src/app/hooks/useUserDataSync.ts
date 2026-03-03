@@ -7,6 +7,7 @@ import type { Cart } from "@/types";
 import { getItem, setItem } from "@/lib/localStorage";
 import { useGetCartId } from "./useGetCartId";
 import { useGetCart } from "./useGetCart";
+import { useCartRealtime } from "./useCartRealtime";
 
 export const useUserDataSync = () => {
   const { user, isLoaded } = useUser();
@@ -55,6 +56,8 @@ export const useUserDataSync = () => {
   } = useGetCart(cartId ?? "", cartLocal, {
     enabled: !!cartId && isLoaded && !!isSignedIn,
   });
+
+  useCartRealtime(isSignedIn ? cartId : null);
 
   useEffect(() => {
     if (updatedCart) {

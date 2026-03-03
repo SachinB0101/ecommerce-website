@@ -80,7 +80,6 @@ const getCart = async (cartId: string, cartLocal: Cart): Promise<Cart> => {
 
       if (error) throw error;
 
-     
       DBCart.push({ ...localItem, id: insertedItem.id });
     }
   }
@@ -96,6 +95,7 @@ export const useGetCart = (cartId: string, cartLocal: Cart, options = {}) => {
   return useQuery({
     queryKey: ["cart", cartId],
     queryFn: () => getCart(cartId, cartLocal),
+    staleTime: 0,
     ...options,
   });
 };
