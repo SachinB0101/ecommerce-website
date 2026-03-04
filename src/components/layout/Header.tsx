@@ -40,7 +40,6 @@ const Header = () => {
     console.log("signout");
     dispatch(clearCart());
     localStorage.clear();
-
     await signOut();
   };
 
