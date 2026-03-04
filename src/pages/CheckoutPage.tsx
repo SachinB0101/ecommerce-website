@@ -14,7 +14,7 @@ import {
   Pencil,
 } from "lucide-react";
 import { Link } from "react-router-dom";
-import { useAppSelector } from "@/app/hooks/core";
+import { useAppSelector } from "@/app/hooks/useRedux";
 
 export function CheckoutPage() {
   const navigate = useNavigate();

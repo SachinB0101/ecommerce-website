@@ -1,7 +1,7 @@
 import { useMutation } from "@tanstack/react-query";
+import { useAppSelector } from "./useRedux";
 import { supabase } from "@/supabaseClient";
 import type { CartItem } from "@/types";
-import { useAppSelector } from "../core";
 
 const buildQuery = (query: any, cartId: string, item: CartItem) => {
   query = query.eq("cart_id", cartId).eq("product_id", Number(item.product.id));

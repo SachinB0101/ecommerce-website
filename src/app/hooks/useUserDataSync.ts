@@ -1,15 +1,13 @@
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { setCart } from "@/features/cart/cartSlice";
-import { useAppDispatch } from "./core";
+import { useAppDispatch } from "./useRedux";
 import { useEffect, useRef } from "react";
 import { setItem } from "@/lib/localStorage";
-import {
-  useGetCart,
-  useGetCartId,
-  useMergeCart,
-  useCartRealtime,
-  useGuestCart,
-} from "./cart";
+import { useGetCartId } from "./useGetCartId";
+import { useGetCart } from "./useGetCart";
+import { useMergeCart } from "./useMergeCart";
+import { useCartRealtime } from "./useCartRealtime";
+import { useGuestCart } from "./useGuestCart";
 
 export const useUserDataSync = () => {
   const { user, isLoaded } = useUser();

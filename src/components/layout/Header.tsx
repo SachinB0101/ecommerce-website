@@ -18,9 +18,9 @@ import {
   X,
 } from "lucide-react";
 import { clearCart, setCartOpen } from "@/features/cart/cartSlice";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/useRedux";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAppDispatch, useAppSelector } from "@/app/hooks/core";
 
 const Header = () => {
   const dispatch = useAppDispatch();
