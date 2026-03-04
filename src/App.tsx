@@ -39,9 +39,8 @@ if (!CLERK_PUBLISHABLE_KEY) {
   throw new Error("Missing VITE_CLERK_PUBLISHABLE_KEY in .env");
 }
 
-//Adding staleTime for every query.
-// Might chanage it later and use provider for real time update
-// or a custom stateTime based on a query
+//Adding staleTime for every query except cart.
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {

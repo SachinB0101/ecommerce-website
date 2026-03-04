@@ -30,7 +30,6 @@ export const Cart = () => {
   const { mutate: deleteItem } = useDeleteCartItemFromDB();
   const { mutate: updateItem } = useUpdateCartItemFromDB();
 
-  // #3 — per-item loading state instead of global
   const [loadingItemId, setLoadingItemId] = useState<string | null>(null);
 
   const subtotal = items.reduce(
@@ -46,7 +45,6 @@ export const Cart = () => {
         onSettled: () => setLoadingItemId(null),
         onError: () => {
           dispatch(updateCart(item));
-          // #2 — toast instead of alert
           toast.error("Failed to remove item. Please try again.");
         },
       });
@@ -64,7 +62,6 @@ export const Cart = () => {
           onSettled: () => setLoadingItemId(null),
           onError: () => {
             dispatch(updateCart(item));
-            // #2 — toast instead of alert
             toast.error("Failed to remove item. Please try again.");
           },
         });
@@ -75,7 +72,6 @@ export const Cart = () => {
             onSettled: () => setLoadingItemId(null),
             onError: () => {
               dispatch(updateCart(item));
-              // #2 — toast instead of alert
               toast.error("Failed to update item quantity. Please try again.");
             },
           },
@@ -143,7 +139,6 @@ export const Cart = () => {
                             variant="ghost"
                             size="icon"
                             className="h-8 w-8"
-                            // #3 — only disable this specific item's buttons
                             disabled={loadingItemId === item.id}
                             onClick={() => handleDeleteCartItem(item)}
                           >
