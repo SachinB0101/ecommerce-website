@@ -20,7 +20,7 @@ import {
 import { clearCart, setCartOpen } from "@/features/cart/cartSlice";
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useAppDispatch, useAppSelector } from "@/app/hooks/core";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/useRedux";
 
 const Header = () => {
   const dispatch = useAppDispatch();

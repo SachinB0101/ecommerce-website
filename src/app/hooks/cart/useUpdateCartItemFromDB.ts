@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CartItem } from "@/types";
 import { supabase } from "@/supabaseClient";
-import { useAppSelector } from "../core";
+import { useAppSelector } from "../useRedux";
 
 interface UpdateCartItemPayload {
   item: CartItem;

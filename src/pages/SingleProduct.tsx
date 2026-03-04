@@ -19,7 +19,7 @@ import { useAddItemToDB } from "@/app/hooks/cart/useAddItemToDB";
 import { useAuth } from "@clerk/clerk-react";
 import type { CartItem } from "@/types";
 import { v4 as uuidv4 } from "uuid";
-import { useAppDispatch } from "@/app/hooks/core";
+import { useAppDispatch } from "@/app/hooks/useRedux";
 
 const SingleProduct = () => {
   const { isSignedIn } = useAuth();

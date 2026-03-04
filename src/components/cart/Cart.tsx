@@ -1,4 +1,3 @@
-import { useAppDispatch, useAppSelector } from "@/app/hooks/core";
 import {
   Sheet,
   SheetContent,
@@ -20,6 +19,7 @@ import { useAuth } from "@clerk/clerk-react";
 import { toast } from "sonner";
 import { useState } from "react";
 import { useDeleteCartItemFromDB, useUpdateCartItemFromDB } from "@/app/hooks/cart";
+import { useAppDispatch, useAppSelector } from "@/app/hooks/useRedux";
 
 export const Cart = () => {
   const dispatch = useAppDispatch();

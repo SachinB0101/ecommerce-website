@@ -1,6 +1,5 @@
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { setCart } from "@/features/cart/cartSlice";
-import { useAppDispatch } from "./core";
 import { useEffect, useRef } from "react";
 import { setItem } from "@/lib/localStorage";
 import {
@@ -10,6 +9,7 @@ import {
   useCartRealtime,
   useGuestCart,
 } from "./cart";
+import { useAppDispatch } from "./useRedux";
 
 export const useUserDataSync = () => {
   const { user, isLoaded } = useUser();
