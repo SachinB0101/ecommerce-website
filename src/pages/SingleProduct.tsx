@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useProduct } from "@/app/hooks/useProduct";
+import { useProduct } from "@/app/hooks/products/useProduct";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -13,13 +13,13 @@ import { formatPrice } from "@/lib/utils";
 import { useState } from "react";
 import { ChevronLeft, Star, ShoppingBag, Check } from "lucide-react";
 import { motion } from "framer-motion";
-import { useAppDispatch } from "@/app/hooks/useRedux";
 import { addToCart } from "@/features/cart/cartSlice";
 import ErrorPage from "./ErrorPage";
-import { useAddItemToDB } from "@/app/hooks/useAddItemToDB";
+import { useAddItemToDB } from "@/app/hooks/cart/useAddItemToDB";
 import { useAuth } from "@clerk/clerk-react";
 import type { CartItem } from "@/types";
 import { v4 as uuidv4 } from "uuid";
+import { useAppDispatch } from "@/app/hooks/core";
 
 const SingleProduct = () => {
   const { isSignedIn } = useAuth();
