@@ -1,7 +1,7 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import type { CartItem } from "@/types";
 import { supabase } from "@/supabaseClient";
-import { useAppSelector } from "./useRedux";
+import { useAppSelector } from "../core";
 
 export const useDeleteCartItemFromDB = () => {
   const queryClient = useQueryClient();

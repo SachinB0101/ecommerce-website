@@ -1,6 +1,6 @@
 import type { Category } from "@/types";
 import { ProductCard } from "./ProductCard";
-import { useProducts } from "@/app/hooks/useProducts";
+import { useProducts } from "@/app/hooks/products/useProducts";
 import ErrorPage from "@/pages/ErrorPage";
 
 type ProductsProps = {
