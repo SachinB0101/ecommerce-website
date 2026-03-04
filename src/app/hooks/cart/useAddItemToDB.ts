@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import { useAppSelector } from "./useRedux";
+import { useAppSelector } from "../useRedux";
 import { supabase } from "@/supabaseClient";
 import type { CartItem } from "@/types";
 

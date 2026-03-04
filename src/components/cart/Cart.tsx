@@ -16,11 +16,13 @@ import { formatPrice } from "@/lib/utils";
 import { motion, AnimatePresence } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import type { CartItem } from "@/types";
-import { useDeleteCartItemFromDB } from "@/app/hooks/useDeleteCartItemFromDB";
-import { useUpdateCartItemFromDB } from "@/app/hooks/useUpdateCartItemFromDB";
 import { useAuth } from "@clerk/clerk-react";
 import { toast } from "sonner";
 import { useState } from "react";
+import {
+  useDeleteCartItemFromDB,
+  useUpdateCartItemFromDB,
+} from "@/app/hooks/cart";
 
 export const Cart = () => {
   const dispatch = useAppDispatch();

@@ -1,5 +1,5 @@
 import { useParams, Link } from "react-router-dom";
-import { useProduct } from "@/app/hooks/useProduct";
+import { useProduct } from "@/app/hooks/products/useProduct";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import {
@@ -16,10 +16,10 @@ import { motion } from "framer-motion";
 import { useAppDispatch } from "@/app/hooks/useRedux";
 import { addToCart } from "@/features/cart/cartSlice";
 import ErrorPage from "./ErrorPage";
-import { useAddItemToDB } from "@/app/hooks/useAddItemToDB";
 import { useAuth } from "@clerk/clerk-react";
 import type { CartItem } from "@/types";
 import { v4 as uuidv4 } from "uuid";
+import { useAddItemToDB } from "@/app/hooks/cart";
 
 const SingleProduct = () => {
   const { isSignedIn } = useAuth();
