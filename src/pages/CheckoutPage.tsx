@@ -1,42 +1,20 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-// import { useUser } from "@clerk/clerk-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { formatPrice } from "@/lib/utils";
-import type { Address, PaymentMethod } from "@/types";
-import {
-  MapPin,
-  CreditCard,
-  ShoppingBag,
-  AlertCircle,
-  Pencil,
-} from "lucide-react";
+import { ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import { useAppSelector } from "@/app/hooks/useRedux";
+import Shipping from "@/components/checkout/Shipping";
+import Payment from "@/components/checkout/Payment";
 
 export function CheckoutPage() {
   const navigate = useNavigate();
-  // const { user } = useUser();
-  // const dispatch = useAppDispatch();
   const { items } = useAppSelector((state) => state.cart);
   const [isProcessing, setIsProcessing] = useState(false);
 
-  const addresses: Address[] = [
-    {
-      id: "1",
-      fullName: "John Doe",
-      addressLine1: "123 Main Street",
-      addressLine2: "Apt 4B",
-      city: "New York",
-      state: "NY",
-      zipCode: "10001",
-      country: "United States",
-      isDefault: true,
-    },
-  ];
-  const paymentMethods: PaymentMethod[] = [];
+  const canPlaceOrder = false;
 
   const subtotal = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -47,6 +25,7 @@ export function CheckoutPage() {
   const total = subtotal + shipping + tax;
 
   const handlePlaceOrder = async () => {
+    // if (!canPlaceOrder) return;
     setIsProcessing(true);
     setIsProcessing(false);
     navigate("/orders");
@@ -79,152 +58,9 @@ export function CheckoutPage() {
         {/* Left Column - Address & Payment */}
         <div className="lg:col-span-2 space-y-6">
           {/* Shipping Address */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <MapPin className="h-5 w-5" />
-                Shipping Address
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {addresses.length === 0 ? (
-                <div className="border border-dashed rounded-lg p-6 text-center">
-                  <AlertCircle className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                  <p className="text-sm text-muted-foreground mb-3">
-                    No saved addresses. Add one to continue.
-                  </p>
-                  <Button asChild size="sm">
-                    <Link to="/profile">Add Address</Link>
-                  </Button>
-                </div>
-              ) : (
-                <>
-                  {addresses.map((address) => (
-                    <div
-                      key={address.id}
-                      onClick={() => console.log("button got clicked")}
-                      className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                        true
-                          ? "border-primary bg-primary/5"
-                          : "hover:border-muted-foreground/50"
-                      }`}
-                    >
-                      <div className="flex items-start justify-between">
-                        <div className="space-y-1">
-                          <div className="flex items-center gap-2">
-                            <p className="font-medium">{address.fullName}</p>
-                            {address.isDefault && (
-                              <Badge variant="secondary" className="text-xs">
-                                Default
-                              </Badge>
-                            )}
-                          </div>
-                          <p className="text-sm text-muted-foreground">
-                            {address.addressLine1}
-                            {address.addressLine2 &&
-                              `, ${address.addressLine2}`}
-                          </p>
-                          <p className="text-sm text-muted-foreground">
-                            {address.city}, {address.state} {address.zipCode}
-                          </p>
-                        </div>
-                        {true && (
-                          <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
-                            <div className="h-2 w-2 rounded-full bg-white" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="sm"
-                    className="gap-1.5"
-                  >
-                    <Link to="/profile">
-                      <Pencil className="h-3.5 w-3.5" />
-                      Edit Address
-                    </Link>
-                  </Button>
-                </>
-              )}
-            </CardContent>
-          </Card>
-
+          <Shipping />
           {/* Payment Method */}
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CreditCard className="h-5 w-5" />
-                Payment Method
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-3">
-              {paymentMethods.length === 0 ? (
-                <div className="border border-dashed rounded-lg p-6 text-center">
-                  <AlertCircle className="h-8 w-8 mx-auto text-muted-foreground mb-2" />
-                  <p className="text-sm text-muted-foreground mb-3">
-                    No saved payment methods. Add one to continue.
-                  </p>
-                  <Button asChild size="sm">
-                    <Link to="/profile">Add Payment Method</Link>
-                  </Button>
-                </div>
-              ) : (
-                <>
-                  {paymentMethods.map((pm) => (
-                    <div
-                      key={pm.id}
-                      onClick={() => console.log("button clicked")}
-                      className={`border rounded-lg p-4 cursor-pointer transition-colors ${
-                        true
-                          ? "border-primary bg-primary/5"
-                          : "hover:border-muted-foreground/50"
-                      }`}
-                    >
-                      <div className="flex items-center justify-between">
-                        <div className="flex items-center gap-3">
-                          <CreditCard className="h-5 w-5 text-muted-foreground" />
-                          <div>
-                            <div className="flex items-center gap-2">
-                              <p className="font-medium">
-                                {pm.cardType} •••• {pm.lastFour}
-                              </p>
-                              {pm.isDefault && (
-                                <Badge variant="secondary" className="text-xs">
-                                  Default
-                                </Badge>
-                              )}
-                            </div>
-                            <p className="text-sm text-muted-foreground">
-                              Expires {pm.expiryMonth}/{pm.expiryYear}
-                            </p>
-                          </div>
-                        </div>
-                        {true && (
-                          <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
-                            <div className="h-2 w-2 rounded-full bg-white" />
-                          </div>
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                  <Button
-                    asChild
-                    variant="outline"
-                    size="sm"
-                    className="gap-1.5"
-                  >
-                    <Link to="/profile">
-                      <Pencil className="h-3.5 w-3.5" />
-                      Edit Payment
-                    </Link>
-                  </Button>
-                </>
-              )}
-            </CardContent>
-          </Card>
+          <Payment />
         </div>
 
         {/* Right Column - Order Summary */}
@@ -284,11 +120,16 @@ export function CheckoutPage() {
                   </span>
                 </div>
 
-                <Button className="w-full" size="lg" onClick={handlePlaceOrder}>
+                <Button
+                  className="w-full"
+                  size="lg"
+                  onClick={handlePlaceOrder}
+                  disabled={!canPlaceOrder || isProcessing}
+                >
                   {isProcessing ? "Processing..." : "Place Order"}
                 </Button>
 
-                {subtotal < 100 && (
+                {canPlaceOrder && subtotal < 100 && (
                   <p className="text-xs text-muted-foreground text-center">
                     Add {formatPrice(100 - subtotal)} more for free shipping
                   </p>
