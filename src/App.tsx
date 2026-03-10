@@ -30,7 +30,7 @@ import { CheckoutPage } from "./pages/CheckoutPage";
 //Going to uncomment these when finished
 // const WhishlistPage = lazy(() => import("./pages/WhishlistPage"));
 // const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
-// const ProfilePage = lazy(() => import("./pages/ProfilePage"));
+const ProfilePage = lazy(() => import("./pages/ProfilePage"));
 // const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
 
 //Clerk authentication
@@ -94,7 +94,7 @@ const router = createBrowserRouter([
         element: <ProtectedRoute />,
         children: [
           { path: "wishlist", element: <ComingSoon /> },
-          { path: "profile", element: <ComingSoon /> },
+          { path: "profile", element: <ProfilePage /> },
           { path: "orders", element: <ComingSoon /> },
         ],
       },
