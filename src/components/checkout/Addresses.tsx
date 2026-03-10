@@ -1,35 +1,62 @@
-import { MapPin, Plus, Trash2 } from "lucide-react";
+import { MapPin, Plus, Trash2, Pencil } from "lucide-react";
 import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { Input } from "../ui/input";
-import { Label } from "../ui/label";
 import { useState } from "react";
 import { useGetAddresses } from "@/app/hooks/address/useGetAddresses";
 import { useSetDefaultAddress } from "@/app/hooks/address/useSetDefaultAddress";
 import { useRemoveAddress } from "@/app/hooks/address/useRemoveAddress";
 import { useAddAddress } from "@/app/hooks/address/useAddAddress";
 import type { Address } from "@/types";
+import { useUpdateAddress } from "@/app/hooks/address/useUpdateAddress";
+import { AddressForm } from "./AddressForm";
 
 const Addresses = () => {
-  const { data: addresses, isLoading } = useGetAddresses();
+  const { data: addresses, isLoading: isGettingAddresses } = useGetAddresses();
   const { mutate: setDefaultAddress } = useSetDefaultAddress();
-  const { mutate: removeAddress } = useRemoveAddress();
-  const { mutate: addAddress, isPending } = useAddAddress();
+  const { mutate: removeAddress, isPending: isRemoving } = useRemoveAddress();
+  const { mutate: addAddress, isPending: isAdding } = useAddAddress();
+  const { mutate: updateAddress, isPending: isUpdating } = useUpdateAddress();
+
   const [showAddressForm, setShowAddressForm] = useState(false);
+  const [editingId, setEditingId] = useState<string | null>(null);
   const [form, setForm] = useState<Partial<Address>>({});
+
+  const isLoading = isGettingAddresses || isRemoving;
+  const isPending = isAdding || isUpdating;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
   };
 
-  const handleAddAddress = () => {
-    addAddress(form as Omit<Address, "id" | "isDefault">, {
-      onSuccess: () => {
-        setForm({});
-        setShowAddressForm(false);
-      },
-    });
+  const handleEdit = (address: Address) => {
+    setEditingId(address.id);
+    setForm(address);
+    setShowAddressForm(false);
+  };
+
+  const handleCancelForm = () => {
+    setShowAddressForm(false);
+    setEditingId(null);
+    setForm({});
+  };
+
+  const handleSave = () => {
+    if (editingId) {
+      updateAddress({ id: editingId, ...form } as Address, {
+        onSuccess: () => {
+          setEditingId(null);
+          setForm({});
+        },
+      });
+    } else {
+      addAddress(form as Omit<Address, "id" | "isDefault">, {
+        onSuccess: () => {
+          setForm({});
+          setShowAddressForm(false);
+        },
+      });
+    }
   };
 
   return (
@@ -42,7 +69,11 @@ const Addresses = () => {
           </CardTitle>
           <Button
             size="sm"
-            onClick={() => setShowAddressForm(!showAddressForm)}
+            onClick={() => {
+              setShowAddressForm(!showAddressForm);
+              setEditingId(null);
+              setForm({});
+            }}
           >
             <Plus className="h-4 w-4 mr-2" />
             Add Address
@@ -56,100 +87,13 @@ const Addresses = () => {
       ) : (
         <CardContent className="space-y-4">
           {showAddressForm && (
-            <div className="border rounded-lg p-4 bg-muted/30 space-y-3">
-              <div className="grid grid-cols-1 gap-3">
-                <div className="space-y-1">
-                  <Label htmlFor="fullName">Full Name</Label>
-                  <Input
-                    id="fullName"
-                    name="fullName"
-                    value={form.fullName}
-                    onChange={handleChange}
-                    placeholder="John Doe"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="addressLine1">Address Line 1</Label>
-                  <Input
-                    id="addressLine1"
-                    name="addressLine1"
-                    value={form.addressLine1}
-                    onChange={handleChange}
-                    placeholder="123 Main St"
-                  />
-                </div>
-                <div className="space-y-1">
-                  <Label htmlFor="addressLine2">
-                    Address Line 2 (optional)
-                  </Label>
-                  <Input
-                    id="addressLine2"
-                    name="addressLine2"
-                    value={form.addressLine2}
-                    onChange={handleChange}
-                    placeholder="Apt 4B"
-                  />
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <Label htmlFor="city">City</Label>
-                    <Input
-                      id="city"
-                      name="city"
-                      value={form.city}
-                      onChange={handleChange}
-                      placeholder="New York"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="state">State</Label>
-                    <Input
-                      id="state"
-                      name="state"
-                      value={form.state}
-                      onChange={handleChange}
-                      placeholder="NY"
-                    />
-                  </div>
-                </div>
-                <div className="grid grid-cols-2 gap-3">
-                  <div className="space-y-1">
-                    <Label htmlFor="zipCode">Zip Code</Label>
-                    <Input
-                      id="zipCode"
-                      name="zipCode"
-                      value={form.zipCode}
-                      onChange={handleChange}
-                      placeholder="10001"
-                    />
-                  </div>
-                  <div className="space-y-1">
-                    <Label htmlFor="country">Country</Label>
-                    <Input
-                      id="country"
-                      name="country"
-                      value={form.country}
-                      onChange={handleChange}
-                      placeholder="US"
-                    />
-                  </div>
-                </div>
-              </div>
-              <div className="flex gap-2 pt-1">
-                <Button onClick={handleAddAddress} disabled={isPending}>
-                  {isPending ? "Saving..." : "Save Address"}
-                </Button>
-                <Button
-                  variant="outline"
-                  onClick={() => {
-                    setShowAddressForm(false);
-                    setForm({});
-                  }}
-                >
-                  Cancel
-                </Button>
-              </div>
-            </div>
+            <AddressForm
+              form={form}
+              isPending={isPending}
+              onChange={handleChange}
+              onSave={handleSave}
+              onCancel={handleCancelForm}
+            />
           )}
 
           {addresses?.length === 0 ? (
@@ -159,48 +103,65 @@ const Addresses = () => {
           ) : (
             <div className="space-y-3">
               {addresses?.map((address) => (
-                <div
-                  key={address.id}
-                  className="border rounded-lg p-4 flex items-start justify-between"
-                >
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <p className="font-medium">{address.fullName}</p>
-                      {address.isDefault && (
-                        <Badge variant="secondary" className="text-xs">
-                          Default
-                        </Badge>
-                      )}
+                <div key={address.id}>
+                  {editingId === address.id ? (
+                    <AddressForm
+                      isEdit
+                      form={form}
+                      isPending={isPending}
+                      onChange={handleChange}
+                      onSave={handleSave}
+                      onCancel={handleCancelForm}
+                    />
+                  ) : (
+                    <div className="border rounded-lg p-4 flex items-start justify-between">
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <p className="font-medium">{address.fullName}</p>
+                          {address.isDefault && (
+                            <Badge variant="secondary" className="text-xs">
+                              Default
+                            </Badge>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground">
+                          {address.addressLine1}
+                          {address.addressLine2 && `, ${address.addressLine2}`}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {address.city}, {address.state} {address.zipCode}
+                        </p>
+                        <p className="text-sm text-muted-foreground">
+                          {address.country}
+                        </p>
+                      </div>
+                      <div className="flex gap-2 items-center">
+                        {!address.isDefault && (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            onClick={() => setDefaultAddress(address.id)}
+                          >
+                            Set Default
+                          </Button>
+                        )}
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => handleEdit(address)}
+                        >
+                          <Pencil className="h-4 w-4" />
+                        </Button>
+                        <Button
+                          variant="ghost"
+                          size="icon"
+                          onClick={() => removeAddress(address.id)}
+                        >
+                          <Trash2 className="h-4 w-4" />
+                        </Button>
+                      </div>
                     </div>
-                    <p className="text-sm text-muted-foreground">
-                      {address.addressLine1}
-                      {address.addressLine2 && `, ${address.addressLine2}`}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {address.city}, {address.state} {address.zipCode}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {address.country}
-                    </p>
-                  </div>
-                  <div className="flex gap-2">
-                    {!address.isDefault && (
-                      <Button
-                        variant="ghost"
-                        size="sm"
-                        onClick={() => setDefaultAddress(address.id)}
-                      >
-                        Set Default
-                      </Button>
-                    )}
-                    <Button
-                      variant="ghost"
-                      size="icon"
-                      onClick={() => removeAddress(address.id)}
-                    >
-                      <Trash2 className="h-4 w-4" />
-                    </Button>
-                  </div>
+                  )}
                 </div>
               ))}
             </div>
