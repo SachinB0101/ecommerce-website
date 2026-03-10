@@ -3,6 +3,11 @@ import { CreditCard, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
+import { useEffect } from "react";
+
+type PaymentProps = {
+  setHasPayment: (value: boolean) => void;
+};
 
 const DUMMY_DEFAULT_PAYMENT = {
   id: "pm_demo_4242",
@@ -13,8 +18,15 @@ const DUMMY_DEFAULT_PAYMENT = {
   isDefault: true,
 };
 
-const Payment = () => {
+const Payment = ({ setHasPayment }: PaymentProps) => {
   const defaultPayment = DUMMY_DEFAULT_PAYMENT;
+  useEffect(() => {
+    if (defaultPayment) {
+      setHasPayment(true);
+    } else {
+      setHasPayment(false);
+    }
+  }, [defaultPayment, setHasPayment]);
 
   return (
     <Card>

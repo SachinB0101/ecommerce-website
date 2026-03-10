@@ -5,14 +5,25 @@ import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { useGetAddresses } from "@/app/hooks/address/useGetAddresses";
 import { useRemoveAddress } from "@/app/hooks/address/useRemoveAddress";
+import { useEffect } from "react";
 
-const Shipping = () => {
+type ShippingProps = {
+  setHasShipped: (value: boolean) => void;
+};
+const Shipping = ({ setHasShipped }: ShippingProps) => {
   const { data: addresses, isLoading, isError } = useGetAddresses();
   const { mutate: removeAddress } = useRemoveAddress();
 
-  if (isError) return <p>Error loading addresses</p>;
-
   const defaultAddress = addresses?.find((address) => address.isDefault);
+  useEffect(() => {
+    if (defaultAddress) {
+      setHasShipped(true);
+    } else {
+      setHasShipped(false);
+    }
+  }, [defaultAddress, setHasShipped]);
+
+  if (isError) return <p>Error loading addresses</p>;
 
   return (
     <Card>
