@@ -3,8 +3,7 @@ import { MapPin, AlertCircle, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { useGetAddresses } from "@/app/hooks/address/useGetAddresses";
-import { useRemoveAddress } from "@/app/hooks/address/useRemoveAddress";
+import { useGetAddresses, useRemoveAddress } from "@/app/hooks/address/";
 import { useEffect } from "react";
 
 type ShippingProps = {

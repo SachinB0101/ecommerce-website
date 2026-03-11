@@ -3,13 +3,15 @@ import { Badge } from "../ui/badge";
 import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { useState } from "react";
-import { useGetAddresses } from "@/app/hooks/address/useGetAddresses";
-import { useSetDefaultAddress } from "@/app/hooks/address/useSetDefaultAddress";
-import { useRemoveAddress } from "@/app/hooks/address/useRemoveAddress";
-import { useAddAddress } from "@/app/hooks/address/useAddAddress";
 import type { Address } from "@/types";
-import { useUpdateAddress } from "@/app/hooks/address/useUpdateAddress";
 import { AddressForm } from "./AddressForm";
+import {
+  useAddAddress,
+  useGetAddresses,
+  useRemoveAddress,
+  useSetDefaultAddress,
+  useUpdateAddress,
+} from "@/app/hooks/address";
 
 const Addresses = () => {
   const { data: addresses, isLoading: isGettingAddresses } = useGetAddresses();
