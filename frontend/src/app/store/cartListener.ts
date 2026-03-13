@@ -7,7 +7,7 @@ import {
   setCart,
 } from "../../features/cart/cartSlice";
 import { setItem } from "@/lib/localStorage";
-import type { RootState } from "../store/store";
+import type { RootState } from "./store";
 
 export const cartListener = createListenerMiddleware();
 
