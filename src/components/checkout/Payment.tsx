@@ -56,9 +56,9 @@ const Payment = ({ setHasPayment }: PaymentProps) => {
                 </p>
               </div>
             </div>
-            <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
+            {/* <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
               <div className="h-2 w-2 rounded-full bg-white" />
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="flex gap-2">

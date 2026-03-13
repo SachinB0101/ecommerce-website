@@ -72,9 +72,9 @@ const Shipping = ({ setHasShipped }: ShippingProps) => {
                         {defaultAddress.zipCode}
                       </p>
                     </div>
-                    <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
+                    {/* <div className="h-5 w-5 rounded-full bg-primary flex items-center justify-center">
                       <div className="h-2 w-2 rounded-full bg-white" />
-                    </div>
+                    </div> */}
                   </div>
                 </div>
               </Link>
