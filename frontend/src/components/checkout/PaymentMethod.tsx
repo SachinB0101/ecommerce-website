@@ -1,9 +1,10 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { CreditCard, Pencil, Trash2 } from "lucide-react";
+import { CreditCard, Loader2, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
 import { useEffect, useState } from "react";
+import useGetCustomerId from "@/app/hooks/payment/useGetCustomerId";
 
 type SavedCard = {
   id: string;
@@ -17,12 +18,13 @@ type SavedCard = {
 
 type PaymentProps = {
   setHasPayment: (value: boolean) => void;
-  customerId: string | null; // comes from your Supabase profile
 };
 
-const Payment = ({ setHasPayment, customerId }: PaymentProps) => {
+const PaymentMethod = ({ setHasPayment }: PaymentProps) => {
   const [savedCard, setSavedCard] = useState<SavedCard | null>(null);
   const [loading, setLoading] = useState(true);
+  const { data: customerId, isLoading: isLoadingCustomerId } =
+    useGetCustomerId();
 
   useEffect(() => {
     const fetchSavedCard = async () => {
@@ -65,15 +67,22 @@ const Payment = ({ setHasPayment, customerId }: PaymentProps) => {
     }
   };
 
-  if (loading) {
+  if (loading || isLoadingCustomerId) {
+    // return (
+    //   <Card>
+    //     <CardContent className="py-6">
+    //       <p className="text-sm text-muted-foreground">
+    //         Loading payment method...
+    //       </p>
+    //     </CardContent>
+    //   </Card>
+    // );
     return (
-      <Card>
-        <CardContent className="py-6">
-          <p className="text-sm text-muted-foreground">
-            Loading payment method...
-          </p>
-        </CardContent>
-      </Card>
+      <div className="container py-12 max-w-4xl">
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
     );
   }
 
@@ -144,4 +153,4 @@ const Payment = ({ setHasPayment, customerId }: PaymentProps) => {
   );
 };
 
-export default Payment;
+export default PaymentMethod;

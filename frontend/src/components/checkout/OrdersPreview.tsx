@@ -1,14 +1,26 @@
 import { useAppSelector } from "@/app/hooks/useRedux";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatPrice } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { useUser } from "@clerk/clerk-react";
+import useGetCustomerId from "@/app/hooks/payment/useGetCustomerId";
+import useUpdateCustomerId from "@/app/hooks/payment/useUpdateCustomerId";
+import { Loader2 } from "lucide-react";
 
 const OrdersPreview = ({ canPlaceOrder }: { canPlaceOrder: boolean }) => {
   const navigate = useNavigate();
   const { items } = useAppSelector((state) => state.cart);
   const [isProcessing, setIsProcessing] = useState(false);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+
+  const { user } = useUser();
+
+  const { data: customerId, isLoading: isLoadingCustomerId } =
+    useGetCustomerId();
+
+  const { mutate: updateCustomerId } = useUpdateCustomerId();
 
   const subtotal = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -16,14 +28,50 @@ const OrdersPreview = ({ canPlaceOrder }: { canPlaceOrder: boolean }) => {
   );
   const shipping = subtotal > 100 ? 0 : 10;
   const tax = subtotal * 0.08;
-  const total = subtotal + shipping + tax;
+  const total = Math.round((subtotal + shipping + tax) * 100);
 
-  const handlePlaceOrder = async () => {
-    // if (!canPlaceOrder) return;
+  useEffect(() => {
+    if (items.length === 0 || isLoadingCustomerId) return; // wait for customerId to load first
+
+    const initCheckout = async () => {
+      const res = await fetch("http://localhost:8080/api/payments/checkout", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerId,
+          email: user?.emailAddresses[0].emailAddress,
+          name: user?.fullName,
+          amount: total,
+          currency: "cad",
+        }),
+      });
+
+      const data = await res.json();
+      setClientSecret(data.clientSecret);
+
+      // If a new Stripe customer was created, save it to Supabase
+      if (!customerId && data.customerId) {
+        updateCustomerId(data.customerId);
+      }
+    };
+
+    initCheckout();
+  }, [isLoadingCustomerId]); 
+
+  const handlePlaceOrder = () => {
     setIsProcessing(true);
-    setIsProcessing(false);
     navigate("/orders");
   };
+
+  if (!clientSecret) {
+    return (
+      <div className="container py-12 max-w-4xl">
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="lg:col-span-1">

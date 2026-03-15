@@ -78,4 +78,29 @@ router.delete("/card", async (req: Request, res: Response) => {
   }
 });
 
+router.post("/setup-intent", async (req: Request, res: Response) => {
+  const { customerId, email, name } = req.body;
+
+  try {
+    let stripeCustomerId: string = customerId;
+
+    if (!customerId) {
+      const customer = await stripe.customers.create({ email, name });
+      stripeCustomerId = customer.id;
+    }
+
+    const setupIntent = await stripe.setupIntents.create({
+      customer: stripeCustomerId,
+      payment_method_types: ["card"],
+    });
+
+    res.json({
+      clientSecret: setupIntent.client_secret,
+      customerId: stripeCustomerId,
+    });
+  } catch (err: any) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 export default router;

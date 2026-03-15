@@ -4,7 +4,6 @@ import { Button } from "../ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import { useState } from "react";
 import type { Address } from "@/types";
-import { AddressForm } from "./AddressForm";
 import {
   useAddAddress,
   useGetAddresses,
@@ -12,6 +11,7 @@ import {
   useSetDefaultAddress,
   useUpdateAddress,
 } from "@/app/hooks/address";
+import { AddressForm } from "./AddressForm";
 
 const Addresses = () => {
   const { data: addresses, isLoading: isGettingAddresses } = useGetAddresses();
