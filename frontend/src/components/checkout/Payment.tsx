@@ -33,7 +33,7 @@ const Payment = ({ setHasPayment, customerId }: PaymentProps) => {
       }
 
       const res = await fetch(
-        `http://localhost:5000/api/payments/saved-cards?customerId=${customerId}`,
+        `http://localhost:8080/api/payments/saved-cards?customerId=${customerId}`,
       );
       const data = await res.json();
 

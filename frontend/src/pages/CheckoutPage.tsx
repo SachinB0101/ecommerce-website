@@ -7,7 +7,7 @@ import Shipping from "@/components/checkout/Shipping";
 import Payment from "@/components/checkout/Payment";
 import OrdersPreview from "@/components/checkout/OrdersPreview";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag } from "lucide-react";
+import { Loader2, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import useGetCustomerId from "@/app/hooks/payment/useGetCustomerId";
 import useUpdateCustomerId from "@/app/hooks/payment/useUpdateCustomerId";
@@ -39,7 +39,7 @@ export function CheckoutPage() {
     if (items.length === 0 || isLoadingCustomerId) return; // wait for customerId to load first
 
     const initCheckout = async () => {
-      const res = await fetch("http://localhost:5000/api/payments/checkout", {
+      const res = await fetch("http://localhost:8080/api/payments/checkout", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -85,8 +85,8 @@ export function CheckoutPage() {
   if (!clientSecret) {
     return (
       <div className="container py-12 max-w-4xl">
-        <div className="text-center py-20">
-          <p className="text-muted-foreground">Preparing checkout...</p>
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
         </div>
       </div>
     );
