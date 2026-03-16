@@ -1,7 +1,8 @@
 import { useUser } from "@clerk/clerk-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { User } from "lucide-react";
-import Addresses from "@/components/checkout/Addresses";
+import Cards from "@/components/profile/Cards";
+import Addresses from "@/components/profile/Addresses";
 
 export default function ProfilePage() {
   const { user } = useUser();
@@ -47,6 +48,8 @@ export default function ProfilePage() {
 
         {/* Addresses */}
         <Addresses />
+
+        <Cards />
       </div>
     </div>
   );

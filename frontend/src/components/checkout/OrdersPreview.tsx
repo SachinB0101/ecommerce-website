@@ -1,14 +1,18 @@
 import { useAppSelector } from "@/app/hooks/useRedux";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { formatPrice } from "@/lib/utils";
 import { Button } from "../ui/button";
+import { useUser } from "@clerk/clerk-react";
+import useGetCustomerId from "@/app/hooks/payment/useGetCustomerId";
+import usePlaceOrder from "@/app/hooks/payment/usePlaceOrder";
 
 const OrdersPreview = ({ canPlaceOrder }: { canPlaceOrder: boolean }) => {
   const navigate = useNavigate();
   const { items } = useAppSelector((state) => state.cart);
-  const [isProcessing, setIsProcessing] = useState(false);
+
+  const { user } = useUser();
+  const { data: customerId } = useGetCustomerId();
 
   const subtotal = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -16,13 +20,23 @@ const OrdersPreview = ({ canPlaceOrder }: { canPlaceOrder: boolean }) => {
   );
   const shipping = subtotal > 100 ? 0 : 10;
   const tax = subtotal * 0.08;
-  const total = subtotal + shipping + tax;
+  const total = Math.round(subtotal + shipping + tax);
 
-  const handlePlaceOrder = async () => {
-    // if (!canPlaceOrder) return;
-    setIsProcessing(true);
-    setIsProcessing(false);
-    navigate("/orders");
+  const { mutate: placeOrder, isPending, error } = usePlaceOrder();
+  const handlePlaceOrder = () => {
+    if (!customerId) return;
+
+    placeOrder(
+      {
+        customerId,
+        email: user?.emailAddresses[0].emailAddress ?? "",
+        items,
+        currency: "cad",
+      },
+      {
+        onSuccess: () => navigate("/orders"),
+      },
+    );
   };
 
   return (
@@ -80,13 +94,19 @@ const OrdersPreview = ({ canPlaceOrder }: { canPlaceOrder: boolean }) => {
               <span className="font-display text-lg">{formatPrice(total)}</span>
             </div>
 
+            {error && (
+              <p className="text-sm text-destructive text-center">
+                {error.message}
+              </p>
+            )}
+
             <Button
               className="w-full"
               size="lg"
               onClick={handlePlaceOrder}
-              disabled={!canPlaceOrder || isProcessing}
+              disabled={!canPlaceOrder || isPending}
             >
-              {isProcessing ? "Processing..." : "Place Order"}
+              {isPending ? "Processing..." : "Place Order"}
             </Button>
 
             {canPlaceOrder && subtotal < 100 && (
@@ -100,4 +120,5 @@ const OrdersPreview = ({ canPlaceOrder }: { canPlaceOrder: boolean }) => {
     </div>
   );
 };
+
 export default OrdersPreview;

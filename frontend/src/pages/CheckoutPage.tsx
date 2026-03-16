@@ -1,19 +1,44 @@
-import { Button } from "@/components/ui/button";
-import { ShoppingBag } from "lucide-react";
-import { Link } from "react-router-dom";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "@/app/hooks/useRedux";
-import Shipping from "@/components/checkout/Shipping";
-import Payment from "@/components/checkout/Payment";
 import OrdersPreview from "@/components/checkout/OrdersPreview";
-import { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Loader2, ShoppingBag } from "lucide-react";
+import { Link } from "react-router-dom";
+import ShippingAddress from "@/components/checkout/ShippingAddress";
+import PaymentMethod from "@/components/checkout/PaymentMethod";
+import useGetCustomerId from "@/app/hooks/payment/useGetCustomerId";
+import useCreateCustomer from "@/app/hooks/payment/useCreateCustomer";
 
 export function CheckoutPage() {
   const { items } = useAppSelector((state) => state.cart);
 
   const [hasShipped, setHasShipped] = useState(false);
   const [hasPayment, setHasPayment] = useState(false);
+  const { data: customerId, isLoading: isLoadingCustomerId } =
+    useGetCustomerId();
+
+  const { mutate: createCustomer, isPending: isCreatingCustomer } =
+    useCreateCustomer();
 
   const canPlaceOrder = hasPayment && hasShipped && items.length > 0;
+
+  useEffect(() => {
+    if (!isLoadingCustomerId) {
+      if (!customerId) {
+        createCustomer();
+      }
+    }
+  }, [customerId, isLoadingCustomerId, createCustomer]);
+
+  if (isLoadingCustomerId || isCreatingCustomer) {
+    return (
+      <div className="container py-12 max-w-4xl">
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (
@@ -37,16 +62,11 @@ export function CheckoutPage() {
   return (
     <div className="container py-12 max-w-6xl">
       <h1 className="font-display text-4xl font-bold mb-8">Checkout</h1>
-
       <div className="grid lg:grid-cols-3 gap-8">
-        {/* Left Column - Address & Payment */}
         <div className="lg:col-span-2 space-y-6">
-          {/* Shipping Address */}
-          <Shipping setHasShipped={setHasShipped} />
-          {/* Payment Method */}
-          <Payment setHasPayment={setHasPayment} />
+          <ShippingAddress setHasShipped={setHasShipped} />
+          <PaymentMethod setHasPayment={setHasPayment} />
         </div>
-        {/* Right Column - Order Summary */}
         <OrdersPreview canPlaceOrder={canPlaceOrder} />
       </div>
     </div>
