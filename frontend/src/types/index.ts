@@ -58,31 +58,17 @@ export interface Address {
   isDefault: boolean;
 }
 
-export interface PaymentMethod {
+export interface StripePaymentMethod {
   id: string;
-  cardType: string;
-  lastFour: string;
-  expiryMonth: string;
-  expiryYear: string;
-  isDefault: boolean;
+  card: {
+    brand: string;
+    last4: string;
+    exp_month: number;
+    exp_year: number;
+  };
 }
 
 export interface WishlistItem {
   productId: string;
   addedAt: string;
-}
-
-export interface Order {
-  id: string;
-  userId: string;
-  items: CartItem[];
-  shippingAddress: Address;
-  paymentMethod: PaymentMethod;
-  subtotal: number;
-  shipping: number;
-  tax: number;
-  total: number;
-  status: "pending" | "processing" | "shipped" | "delivered" | "cancelled";
-  createdAt: string;
-  updatedAt: string;
 }

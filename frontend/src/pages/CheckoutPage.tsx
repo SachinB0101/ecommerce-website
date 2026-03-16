@@ -1,19 +1,44 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAppSelector } from "@/app/hooks/useRedux";
 import OrdersPreview from "@/components/checkout/OrdersPreview";
 import { Button } from "@/components/ui/button";
-import { ShoppingBag } from "lucide-react";
+import { Loader2, ShoppingBag } from "lucide-react";
 import { Link } from "react-router-dom";
 import ShippingAddress from "@/components/checkout/ShippingAddress";
 import PaymentMethod from "@/components/checkout/PaymentMethod";
+import useGetCustomerId from "@/app/hooks/payment/useGetCustomerId";
+import useCreateCustomer from "@/app/hooks/payment/useCreateCustomer";
 
 export function CheckoutPage() {
   const { items } = useAppSelector((state) => state.cart);
 
   const [hasShipped, setHasShipped] = useState(false);
   const [hasPayment, setHasPayment] = useState(false);
+  const { data: customerId, isLoading: isLoadingCustomerId } =
+    useGetCustomerId();
+
+  const { mutate: createCustomer, isPending: isCreatingCustomer } =
+    useCreateCustomer();
 
   const canPlaceOrder = hasPayment && hasShipped && items.length > 0;
+
+  useEffect(() => {
+    if (!isLoadingCustomerId) {
+      if (!customerId) {
+        createCustomer();
+      }
+    }
+  }, [customerId, isLoadingCustomerId, createCustomer]);
+
+  if (isLoadingCustomerId || isCreatingCustomer) {
+    return (
+      <div className="container py-12 max-w-4xl">
+        <div className="flex items-center justify-center py-20">
+          <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
+        </div>
+      </div>
+    );
+  }
 
   if (items.length === 0) {
     return (

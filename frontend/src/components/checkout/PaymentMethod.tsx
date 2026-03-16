@@ -3,80 +3,25 @@ import { CreditCard, Loader2, Pencil, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import { Badge } from "@/components/ui/badge";
-import { useEffect, useState } from "react";
-import useGetCustomerId from "@/app/hooks/payment/useGetCustomerId";
-
-type SavedCard = {
-  id: string;
-  card: {
-    brand: string;
-    last4: string;
-    exp_month: number;
-    exp_year: number;
-  };
-};
+import useGetPaymentMethods from "@/app/hooks/payment/useGetPaymentMethods";
+import { useEffect } from "react";
 
 type PaymentProps = {
   setHasPayment: (value: boolean) => void;
 };
 
 const PaymentMethod = ({ setHasPayment }: PaymentProps) => {
-  const [savedCard, setSavedCard] = useState<SavedCard | null>(null);
-  const [loading, setLoading] = useState(true);
-  const { data: customerId, isLoading: isLoadingCustomerId } =
-    useGetCustomerId();
+  const { defaultCard, hasPayment, isLoading } = useGetPaymentMethods();
 
   useEffect(() => {
-    const fetchSavedCard = async () => {
-      if (!customerId) {
-        setHasPayment(false);
-        setLoading(false);
-        return;
-      }
-
-      const res = await fetch(
-        `http://localhost:8080/api/payments/saved-cards?customerId=${customerId}`,
-      );
-      const data = await res.json();
-
-      // take the first saved card as default
-      const first = data.paymentMethods?.[0] ?? null;
-      setSavedCard(first);
-      setHasPayment(!!first);
-      setLoading(false);
-    };
-
-    fetchSavedCard();
-  }, [customerId]);
+    setHasPayment(hasPayment);
+  }, [hasPayment, setHasPayment]); // ✅ runs after render, not during
 
   const handleDelete = async () => {
-    if (!savedCard || !customerId) return;
-
-    const res = await fetch("http://localhost:5000/api/payments/card", {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ customerId, paymentMethodId: savedCard.id }),
-    });
-
-    const data = await res.json();
-    setSavedCard(null);
-    setHasPayment(false);
-
-    if (data.wasLastCard) {
-      // → your Supabase logic to clear stripe_customer_id
-    }
+    console.log("handleDelete clicked");
   };
 
-  if (loading || isLoadingCustomerId) {
-    // return (
-    //   <Card>
-    //     <CardContent className="py-6">
-    //       <p className="text-sm text-muted-foreground">
-    //         Loading payment method...
-    //       </p>
-    //     </CardContent>
-    //   </Card>
-    // );
+  if (isLoading) {
     return (
       <div className="container py-12 max-w-4xl">
         <div className="flex items-center justify-center py-20">
@@ -95,7 +40,7 @@ const PaymentMethod = ({ setHasPayment }: PaymentProps) => {
         </CardTitle>
       </CardHeader>
       <CardContent className="space-y-3">
-        {savedCard ? (
+        {defaultCard ? (
           <>
             <div className="border rounded-lg p-4 border-primary bg-primary/5">
               <div className="flex items-center justify-between">
@@ -104,16 +49,16 @@ const PaymentMethod = ({ setHasPayment }: PaymentProps) => {
                   <div>
                     <div className="flex items-center gap-2">
                       <p className="font-medium">
-                        {savedCard.card.brand.toUpperCase()} ••••{" "}
-                        {savedCard.card.last4}
+                        {defaultCard.card.brand.toUpperCase()} ••••{" "}
+                        {defaultCard.card.last4}
                       </p>
                       <Badge variant="secondary" className="text-xs">
                         Default
                       </Badge>
                     </div>
                     <p className="text-sm text-muted-foreground">
-                      Expires {savedCard.card.exp_month}/
-                      {savedCard.card.exp_year}
+                      Expires {defaultCard.card.exp_month}/
+                      {defaultCard.card.exp_year}
                     </p>
                   </div>
                 </div>
