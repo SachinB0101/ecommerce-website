@@ -15,7 +15,7 @@ const PaymentMethod = ({ setHasPayment }: PaymentProps) => {
 
   useEffect(() => {
     setHasPayment(hasPayment);
-  }, [hasPayment, setHasPayment]); // ✅ runs after render, not during
+  }, [hasPayment, setHasPayment]);
 
   const handleDelete = async () => {
     console.log("handleDelete clicked");

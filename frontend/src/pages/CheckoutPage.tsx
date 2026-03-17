@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useAppSelector } from "@/app/hooks/useRedux";
 import OrdersPreview from "@/components/checkout/OrdersPreview";
 import { Button } from "@/components/ui/button";
@@ -22,13 +22,14 @@ export function CheckoutPage() {
 
   const canPlaceOrder = hasPayment && hasShipped && items.length > 0;
 
+  const hasCreatedRef = useRef(false);
+
   useEffect(() => {
-    if (!isLoadingCustomerId) {
-      if (!customerId) {
-        createCustomer();
-      }
+    if (!isLoadingCustomerId && !customerId && !hasCreatedRef.current) {
+      hasCreatedRef.current = true;
+      createCustomer();
     }
-  }, [customerId, isLoadingCustomerId, createCustomer]);
+  }, [customerId, isLoadingCustomerId]);
 
   if (isLoadingCustomerId || isCreatingCustomer) {
     return (

@@ -6,17 +6,15 @@ import { CreditCard, Plus, Trash2 } from "lucide-react";
 import { Button } from "../ui/button";
 import { AddCardForm } from "./AddCardForm";
 import type { StripePaymentMethod } from "@/types";
+import useGetCustomerId from "@/app/hooks/payment/useGetCustomerId";
 
-export const CardsInner = ({
-  customerId,
-  isLoadingCustomerId,
-}: {
-  customerId: string | null;
-  isLoadingCustomerId: boolean;
-}) => {
+export const CardsInner = () => {
   const [showAddForm, setShowAddForm] = useState(false);
   const [cardholderName, setCardholderName] = useState("");
   const [postalCode, setPostalCode] = useState("");
+
+  const { data: customerId, isLoading: isLoadingCustomerId } =
+    useGetCustomerId();
 
   const { allCards, isLoading: isLoadingCards } = useGetPaymentMethods();
   const { mutate: setupCard, isPending, error } = useSetupCard();
