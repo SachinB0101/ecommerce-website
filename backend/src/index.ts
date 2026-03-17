@@ -1,9 +1,9 @@
-dotenv.config();
 import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import paymentRoutes from "./routes/payments";
 
+dotenv.config();
 const app = express();
 
 const allowedOrigins = [
