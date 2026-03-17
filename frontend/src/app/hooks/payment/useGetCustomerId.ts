@@ -11,7 +11,7 @@ const getCustomerId = async (clerkUserId: string): Promise<string | null> => {
 
   if (error) throw new Error(error.message);
 
-  return data?.customerId ?? null;
+  return data?.customerId || null;
 };
 
 export const useGetCustomerId = () => {
@@ -20,7 +20,7 @@ export const useGetCustomerId = () => {
   return useQuery({
     queryKey: ["customerId", user?.id],
     queryFn: () => getCustomerId(user!.id),
-    enabled: !!user, 
+    enabled: !!user,
   });
 };
 

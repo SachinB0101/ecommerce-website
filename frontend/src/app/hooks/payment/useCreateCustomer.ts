@@ -1,6 +1,6 @@
 import { supabase } from "@/supabaseClient";
 import { useUser } from "@clerk/clerk-react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 const createCustomer = async (
   clerkUserId: string,
@@ -41,6 +41,7 @@ const createCustomer = async (
 
 export const useCreateCustomer = () => {
   const { user } = useUser();
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async () => {
@@ -56,6 +57,9 @@ export const useCreateCustomer = () => {
       }
 
       return createCustomer(user.id, email, name);
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["customerId", user?.id] });
     },
   });
 };
