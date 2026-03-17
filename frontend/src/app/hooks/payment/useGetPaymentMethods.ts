@@ -5,8 +5,9 @@ import type { StripePaymentMethod } from "@/types";
 const fetchPaymentMethods = async (
   customerId: string,
 ): Promise<StripePaymentMethod[]> => {
+  const api_url = import.meta.env.VITE_SERVER_API_URL;
   const res = await fetch(
-    `http://localhost:8080/api/payments/saved-cards?customerId=${customerId}`,
+    `${api_url}/api/payments/saved-cards?customerId=${customerId}`,
   );
 
   if (!res.ok) throw new Error("Failed to fetch payment methods");

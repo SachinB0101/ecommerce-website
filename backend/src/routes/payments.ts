@@ -1,8 +1,7 @@
+dotenv.config();
 import { Router, Request, Response } from "express";
 import Stripe from "stripe";
 import dotenv from "dotenv";
-
-dotenv.config();
 
 const router = Router();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -126,8 +125,8 @@ router.post("/checkout", async (req: Request, res: Response) => {
       customer: customerId,
       payment_method: paymentMethodId,
       receipt_email: email,
-      confirm: true, 
-      off_session: true, 
+      confirm: true,
+      off_session: true,
       automatic_payment_methods: {
         enabled: true,
         allow_redirects: "never",

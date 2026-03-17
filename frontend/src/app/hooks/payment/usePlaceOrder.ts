@@ -1,4 +1,3 @@
-
 import { useMutation } from "@tanstack/react-query";
 import type { CartItem } from "@/types";
 
@@ -10,7 +9,8 @@ interface PlaceOrderPayload {
 }
 
 const placeOrder = async (payload: PlaceOrderPayload) => {
-  const res = await fetch("http://localhost:8080/api/payments/checkout", {
+  const api_url = import.meta.env.VITE_SERVER_API_URL;
+  const res = await fetch(`${api_url}/api/payments/checkout`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify(payload),

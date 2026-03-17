@@ -24,29 +24,26 @@ const useSetupCard = () => {
       cardholderName,
       postalCode,
     }: SetupCardVariables) => {
+      const api_url = import.meta.env.VITE_SERVER_API_URL;
       if (!stripe || !elements) throw new Error("Stripe is not initialised.");
 
       const cardNumber = elements.getElement(CardNumberElement);
       if (!cardNumber) throw new Error("Card element not found.");
 
-      const res = await fetch(
-        "http://localhost:8080/api/payments/setup-intent",
-        {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            customerId,
-            email: user?.emailAddresses[0].emailAddress,
-            name: user?.fullName,
-          }),
-        },
-      );
+      const res = await fetch(`${api_url}/api/payments/setup-intent`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          customerId,
+          email: user?.emailAddresses[0].emailAddress,
+          name: user?.fullName,
+        }),
+      });
 
       const data = await res.json();
       if (!res.ok)
         throw new Error(data.error ?? "Failed to initialise card setup.");
 
-      
       const { error: stripeError } = await stripe.confirmCardSetup(
         data.clientSecret,
         {

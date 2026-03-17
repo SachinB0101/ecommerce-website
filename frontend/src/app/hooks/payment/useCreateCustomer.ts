@@ -7,19 +7,17 @@ const createCustomer = async (
   email: string,
   name: string,
 ): Promise<string> => {
-  const res = await fetch(
-    "http://localhost:8080/api/payments/create-customer",
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        email,
-        name,
-      }),
+  const api_url = import.meta.env.VITE_SERVER_API_URL;
+  const res = await fetch(`${api_url}/api/payments/create-customer`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
     },
-  );
+    body: JSON.stringify({
+      email,
+      name,
+    }),
+  });
 
   if (!res.ok) {
     throw new Error("Failed to create Stripe customer");
