@@ -8,6 +8,7 @@ const createCustomer = async (
   name: string,
 ): Promise<string> => {
   const api_url = import.meta.env.VITE_SERVER_API_URL;
+  console.log("API URL:", import.meta.env.VITE_SERVER_API_URL);
   const res = await fetch(`${api_url}/api/payments/create-customer`, {
     method: "POST",
     headers: {
