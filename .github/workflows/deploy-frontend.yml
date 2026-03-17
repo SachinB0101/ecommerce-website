@@ -33,8 +33,8 @@ jobs:
           VITE_CLERK_PUBLISHABLE_KEY: ${{ secrets.VITE_CLERK_PUBLISHABLE_KEY }}
           VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-          VITE_SERVER_API_URL: ${{secret.VITE_SERVER_API_URL}}
-          VITE_STRIPE_PUBLIC_KEY: ${{secret.VITE_STRIPE_PUBLIC_KEY}}
+          VITE_SERVER_API_URL: ${{secrets.VITE_SERVER_API_URL}}
+          VITE_STRIPE_PUBLIC_KEY: ${{secrets.VITE_STRIPE_PUBLIC_KEY}}
 
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v4
