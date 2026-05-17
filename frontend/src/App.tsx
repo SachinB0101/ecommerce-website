@@ -26,12 +26,13 @@ import { Cart } from "./components/cart/Cart";
 import SyncUserData from "./components/auth/SyncUserData";
 import ComingSoon from "./pages/ComingSoonPage";
 import { CheckoutPage } from "./pages/CheckoutPage";
+import OrderSuccessPage from "./pages/OrderSuccessPage";
 
 //Going to uncomment these when finished
 // const WhishlistPage = lazy(() => import("./pages/WhishlistPage"));
 // const CheckoutPage = lazy(() => import("./pages/CheckoutPage"));
 const ProfilePage = lazy(() => import("./pages/ProfilePage"));
-// const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
+const OrderHistoryPage = lazy(() => import("./pages/OrderHistoryPage"));
 
 //Clerk authentication
 const CLERK_PUBLISHABLE_KEY = import.meta.env.VITE_CLERK_PUBLISHABLE_KEY;
@@ -84,6 +85,7 @@ const router = createBrowserRouter([
       { path: "products", element: <ProductsPage /> },
       { path: "products/:id", element: <SingleProduct /> },
       { path: "checkout", element: <CheckoutPage /> },
+      { path: "order-success", element: <OrderSuccessPage /> },
       { path: "shipping", element: <ComingSoon /> },
       { path: "size-guide", element: <ComingSoon /> },
       { path: "privacy", element: <ComingSoon /> },
@@ -95,7 +97,7 @@ const router = createBrowserRouter([
         children: [
           { path: "wishlist", element: <ComingSoon /> },
           { path: "profile", element: <ProfilePage /> },
-          { path: "orders", element: <ComingSoon /> },
+          { path: "orders", element: <OrderHistoryPage /> },
         ],
       },
     ],

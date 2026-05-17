@@ -72,3 +72,21 @@ export interface WishlistItem {
   productId: string;
   addedAt: string;
 }
+
+export interface Order {
+  id: string;
+  customerId: string;
+  email: string;
+  items: CartItem[];
+  subtotal: number;
+  shipping: number;
+  tax: number;
+  total: number;
+  address: Address;
+  paymentMethodLast4: string;
+  paymentMethodBrand: string;
+  paymentIntentId: string;
+  currency: string;
+  createdAt: string;
+  estimatedDelivery: string;
+}

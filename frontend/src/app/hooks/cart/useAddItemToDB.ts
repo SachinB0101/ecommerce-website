@@ -1,4 +1,4 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "../useRedux";
 import { supabase } from "@/supabaseClient";
 import type { CartItem } from "@/types";
@@ -54,12 +54,43 @@ const addItemToDB = async (cartId: string, item: CartItem) => {
 
     if (error) throw error;
   }
+
+  // Return the item so we can update the cache
+  return item;
 };
 
 export const useAddItemToDB = () => {
   const cartId = useAppSelector((state) => state.cart.cartId);
+  const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: (item: CartItem) => addItemToDB(cartId!, item),
+    onSuccess: (item) => {
+      // Update the query cache by adding the item to the existing cart data
+      if (cartId) {
+        queryClient.setQueryData(["cart", cartId], (oldItems: CartItem[] = []) => {
+          // Check if item already exists (if updating quantity)
+          const existingIndex = oldItems.findIndex(
+            (existingItem) =>
+              existingItem.product.id === item.product.id &&
+              existingItem.size === item.size &&
+              existingItem.color === item.color
+          );
+
+          if (existingIndex > -1) {
+            // Item exists, update quantity
+            const updatedItems = [...oldItems];
+            updatedItems[existingIndex] = {
+              ...updatedItems[existingIndex],
+              quantity: updatedItems[existingIndex].quantity + item.quantity,
+            };
+            return updatedItems;
+          } else {
+            // New item, add to cart
+            return [...oldItems, item];
+          }
+        });
+      }
+    },
   });
 };

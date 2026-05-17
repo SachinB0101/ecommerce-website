@@ -6,6 +6,9 @@ import { Button } from "../ui/button";
 import { useUser } from "@clerk/clerk-react";
 import useGetCustomerId from "@/app/hooks/payment/useGetCustomerId";
 import usePlaceOrder from "@/app/hooks/payment/usePlaceOrder";
+import { useGetAddresses } from "@/app/hooks/address";
+import useGetPaymentMethods from "@/app/hooks/payment/useGetPaymentMethods";
+import type { Address } from "@/types";
 
 const OrdersPreview = ({ canPlaceOrder }: { canPlaceOrder: boolean }) => {
   const navigate = useNavigate();
@@ -13,6 +16,8 @@ const OrdersPreview = ({ canPlaceOrder }: { canPlaceOrder: boolean }) => {
 
   const { user } = useUser();
   const { data: customerId } = useGetCustomerId();
+  const { data: addresses } = useGetAddresses();
+  const { defaultCard } = useGetPaymentMethods();
 
   const subtotal = items.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
@@ -22,9 +27,11 @@ const OrdersPreview = ({ canPlaceOrder }: { canPlaceOrder: boolean }) => {
   const tax = subtotal * 0.08;
   const total = Math.round(subtotal + shipping + tax);
 
+  const defaultAddress = addresses?.find((address: Address) => address.isDefault);
+
   const { mutate: placeOrder, isPending, error } = usePlaceOrder();
   const handlePlaceOrder = () => {
-    if (!customerId) return;
+    if (!customerId || !defaultAddress || !defaultCard) return;
 
     placeOrder(
       {
@@ -32,9 +39,16 @@ const OrdersPreview = ({ canPlaceOrder }: { canPlaceOrder: boolean }) => {
         email: user?.emailAddresses[0].emailAddress ?? "",
         items,
         currency: "cad",
+        address: defaultAddress,
+        paymentMethodLast4: defaultCard.card.last4,
+        paymentMethodBrand: defaultCard.card.brand,
+        subtotal,
+        shipping,
+        tax,
+        total,
       },
       {
-        onSuccess: () => navigate("/orders"),
+        onSuccess: () => navigate("/order-success"),
       },
     );
   };
