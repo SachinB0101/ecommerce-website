@@ -496,35 +496,6 @@ All UI components use **shadcn/ui** with **Radix UI** primitives:
 
 ---
 
-## 🧪 Testing & Quality Assurance
-
-### Code Quality
-- **TypeScript** for compile-time type checking
-- **ESLint** for code style and best practices
-- **Prettier** for code formatting
-
-### Testing Strategies (Recommended Future Additions)
-- **Unit Tests** with Vitest
-- **Component Tests** with React Testing Library
-- **E2E Tests** with Playwright or Cypress
-- **API Tests** with Jest
-
----
-
-## 📊 Performance Metrics
-
-### Frontend
-- **Bundle Size**: ~150KB (gzipped)
-- **First Paint**: < 1s on 4G
-- **Lighthouse Score**: 85+ (Performance)
-
-### Backend
-- **Response Time**: < 200ms average
-- **Uptime**: 99.9%
-- **Concurrent Requests**: 1000+
-
----
-
 ## 🚀 Deployment
 
 ### Frontend Deployment (AWS S3 + CloudFront)
@@ -561,7 +532,6 @@ docker push yourusername/ecommerce-backend
 - [ ] **Email Notifications** — Order status updates
 - [ ] **Mobile App** — React Native version
 - [ ] **Analytics** — User behavior tracking
-- [ ] **A/B Testing** — Conversion optimization
 - [ ] **Multi-Currency Support** — Support for multiple currencies
 - [ ] **Inventory Management** — Real-time stock tracking
 
@@ -596,52 +566,14 @@ For more details, see [FIX_SUMMARY.md](./FIX_SUMMARY.md)
 
 ---
 
-## 🤝 Contributing
-
-Contributions are welcome! Please follow these guidelines:
-
-1. **Fork** the repository
-2. **Create** a feature branch (`git checkout -b feature/amazing-feature`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing-feature`)
-5. **Open** a Pull Request
-
-### Code Style
-- Use **TypeScript** for all new code
-- Follow **ESLint** configuration
-- Write **meaningful commit messages**
-- Add **comments** for complex logic
-
----
-
-## 📄 License
-
-This project is licensed under the **ISC License** — feel free to use it for personal or commercial projects.
-
----
 
 ## 👨‍💻 Author
 
 **Sachin B**
-- 🌐 Website: [madebysachin.com](https://madebysachin.com)
-- 📧 Email: [contact@madebysachin.com](mailto:contact@madebysachin.com)
-- 💼 LinkedIn: [linkedin.com/in/sachinb](https://linkedin.com/in/sachinb)
+- 🌐 Website: [madebysachin.com](https://d2som4l1lbhsiq.cloudfront.net/)
+- 📧 Email: [contact@madebysachin.com](mailto:sachin.bhatt0010@gmail.com)
+- 💼 LinkedIn: [linkedin.com/in/sachinb](https://www.linkedin.com/in/sachin-bhatt-5333b7217/)
 - 🐙 GitHub: [@SachinB0101](https://github.com/SachinB0101)
-
----
-
-## 📞 Support
-
-If you have questions or need help, please:
-- 📖 Check the [documentation](#-documentation)
-- 🐛 Open an [Issue](https://github.com/SachinB0101/ecommerce-website/issues)
-- 💬 Start a [Discussion](https://github.com/SachinB0101/ecommerce-website/discussions)
-
----
-
-## ⭐ Show Your Support
-
-If this project helped you, please give it a **star**! ⭐
 
 ---
 
