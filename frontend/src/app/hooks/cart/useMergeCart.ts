@@ -1,4 +1,4 @@
-import { supabase } from "@/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/supabaseClient";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { compareCartItems } from "@/lib/compareCartItems";
 import type { Cart, CartItem } from "@/types";
@@ -14,6 +14,11 @@ const mergeCart = async ({
   cartLocal,
   dbItems,
 }: MergeCartParams): Promise<CartItem[]> => {
+  if (!isSupabaseConfigured || !supabase) {
+    console.warn("Supabase is not configured. Returning local cart items.");
+    return [...dbItems, ...cartLocal.items];
+  }
+
   const mergedItems = [...dbItems];
 
   for (const localItem of cartLocal.items) {
@@ -29,7 +34,10 @@ const mergeCart = async ({
         .update({ quantity: newQuantity })
         .eq("id", existingItem.id);
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error updating cart item:", error.message);
+        continue;
+      }
 
       existingItem.quantity = newQuantity;
     } else {
@@ -45,7 +53,10 @@ const mergeCart = async ({
         .select("id")
         .single();
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error inserting cart item:", error.message);
+        continue;
+      }
 
       mergedItems.push({ ...localItem, id: insertedItem.id });
     }

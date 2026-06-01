@@ -1,4 +1,4 @@
-import { supabase } from "@/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/supabaseClient";
 import { useUser } from "@clerk/clerk-react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -8,7 +8,12 @@ const createCustomer = async (
   name: string,
 ): Promise<string> => {
   const api_url = import.meta.env.VITE_SERVER_API_URL;
-  console.log("API URL:", import.meta.env.VITE_SERVER_API_URL);
+  
+  if (!api_url) {
+    throw new Error("Backend API URL is not configured. Please set VITE_SERVER_API_URL in .env");
+  }
+  
+  console.log("API URL:", api_url);
   const res = await fetch(`${api_url}/api/payments/create-customer`, {
     method: "POST",
     headers: {
@@ -27,13 +32,18 @@ const createCustomer = async (
   const data = await res.json();
   const customerId = data.customerId;
 
+  if (!isSupabaseConfigured || !supabase) {
+    console.warn("Supabase not configured. Skipping customerId update.");
+    return customerId;
+  }
+
   const { error } = await supabase
     .from("UsersTable")
     .update({ customerId })
     .eq("clerk_user_id", clerkUserId);
 
   if (error) {
-    throw new Error(error.message);
+    console.error("Error updating customer ID:", error.message);
   }
 
   return customerId;

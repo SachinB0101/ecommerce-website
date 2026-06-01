@@ -1,10 +1,14 @@
-import { supabase } from "@/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/supabaseClient";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/clerk-react";
 
 const getOrCreateUser = async (
   user?: NonNullable<ReturnType<typeof useUser>["user"]> | null,
 ): Promise<string> => {
+  if (!isSupabaseConfigured || !supabase) {
+    throw new Error("Supabase is not configured. Please check your environment variables.");
+  }
+
   const { data: existingUser, error } = await supabase
     .from("UsersTable")
     .select("id")

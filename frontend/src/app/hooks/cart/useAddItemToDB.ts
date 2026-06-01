@@ -1,6 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useAppSelector } from "../useRedux";
-import { supabase } from "@/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/supabaseClient";
 import type { CartItem } from "@/types";
 
 const buildQuery = (query: any, cartId: string, item: CartItem) => {
@@ -22,13 +22,21 @@ const buildQuery = (query: any, cartId: string, item: CartItem) => {
 };
 
 const addItemToDB = async (cartId: string, item: CartItem) => {
+  if (!isSupabaseConfigured || !supabase) {
+    console.warn("Supabase is not configured. Item added to local storage only.");
+    return item;
+  }
+
   const { data: existing, error: fetchError } = await buildQuery(
     supabase.from("CartItemsTable").select("quantity"),
     cartId,
     item,
   );
 
-  if (fetchError) throw fetchError;
+  if (fetchError) {
+    console.error("Error fetching cart item:", fetchError.message);
+    return item;
+  }
 
   // console.log("from useAddItemToDB", existing);
 

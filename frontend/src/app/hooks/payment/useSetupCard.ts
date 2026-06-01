@@ -25,6 +25,11 @@ const useSetupCard = () => {
       postalCode,
     }: SetupCardVariables) => {
       const api_url = import.meta.env.VITE_SERVER_API_URL;
+      
+      if (!api_url) {
+        throw new Error("Backend API URL is not configured. Please set VITE_SERVER_API_URL in .env");
+      }
+
       if (!stripe || !elements) throw new Error("Stripe is not initialised.");
 
       const cardNumber = elements.getElement(CardNumberElement);

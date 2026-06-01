@@ -24,6 +24,11 @@ interface PlaceOrderPayload {
 
 const placeOrder = async (payload: PlaceOrderPayload) => {
   const api_url = import.meta.env.VITE_SERVER_API_URL;
+  
+  if (!api_url) {
+    throw new Error("Backend API URL is not configured. Please set VITE_SERVER_API_URL in .env");
+  }
+  
   const res = await fetch(`${api_url}/api/payments/checkout`, {
     method: "POST",
     headers: { "Content-Type": "application/json" },

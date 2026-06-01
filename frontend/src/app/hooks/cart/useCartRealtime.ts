@@ -1,6 +1,6 @@
 import { useEffect, useRef } from "react";
 import { useQueryClient } from "@tanstack/react-query";
-import { supabase } from "@/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/supabaseClient";
 import type { RealtimeChannel } from "@supabase/supabase-js";
 
 export const useCartRealtime = (cartId: string | null | undefined) => {
@@ -8,7 +8,7 @@ export const useCartRealtime = (cartId: string | null | undefined) => {
   const channelRef = useRef<RealtimeChannel | null>(null);
 
   useEffect(() => {
-    if (!cartId) return;
+    if (!cartId || !isSupabaseConfigured || !supabase) return;
 
     if (channelRef.current) {
       supabase.removeChannel(channelRef.current);

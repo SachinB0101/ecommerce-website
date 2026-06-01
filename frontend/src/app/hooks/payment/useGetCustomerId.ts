@@ -1,15 +1,23 @@
-import { supabase } from "@/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/supabaseClient";
 import { useUser } from "@clerk/clerk-react";
 import { useQuery } from "@tanstack/react-query";
 
 const getCustomerId = async (clerkUserId: string): Promise<string | null> => {
+  if (!isSupabaseConfigured || !supabase) {
+    console.warn("Supabase is not configured. Returning null for customerId.");
+    return null;
+  }
+
   const { data, error } = await supabase
     .from("UsersTable")
     .select("customerId")
     .eq("clerk_user_id", clerkUserId)
     .single();
 
-  if (error) throw new Error(error.message);
+  if (error) {
+    console.error("Error fetching customer ID:", error.message);
+    return null;
+  }
 
   return data?.customerId || null;
 };

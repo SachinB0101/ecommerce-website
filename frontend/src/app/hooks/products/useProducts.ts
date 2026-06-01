@@ -1,24 +1,39 @@
 import { useQuery } from "@tanstack/react-query";
 import type { Product } from "@/types";
-import { supabase } from "@/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/supabaseClient";
+import { getMockProducts } from "@/lib/mockData";
 
 export const useProducts = (category?: string) => {
   return useQuery({
     queryKey: ["products", category],
     queryFn: async (): Promise<Product[]> => {
-      let query = supabase.from("ProductsTable").select("*");
+      try {
+        if (!isSupabaseConfigured || !supabase) {
+          console.warn("Supabase is not configured. Using mock product data.");
+          return getMockProducts(category) as Product[];
+        }
 
-      if (category) {
-        query = query.eq("category", category.toLocaleLowerCase());
+        let query = supabase.from("ProductsTable").select("*");
+
+        if (category) {
+          query = query.eq("category", category.toLocaleLowerCase());
+        }
+
+        const { data, error } = await query;
+
+        if (error) {
+          console.error("Supabase error fetching products:", error.message);
+          console.warn("Falling back to mock data.");
+          return getMockProducts(category) as Product[];
+        }
+
+        return data ?? [];
+      } catch (err) {
+        console.error("Exception fetching products:", err);
+        console.warn("Falling back to mock data.");
+        return getMockProducts(category) as Product[];
       }
-
-      const { data, error } = await query;
-
-      if (error) {
-        throw new Error(error.message);
-      }
-
-      return data ?? [];
     },
+    retry: 1,
   });
 };

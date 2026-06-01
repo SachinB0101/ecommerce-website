@@ -6,6 +6,12 @@ const fetchPaymentMethods = async (
   customerId: string,
 ): Promise<StripePaymentMethod[]> => {
   const api_url = import.meta.env.VITE_SERVER_API_URL;
+  
+  if (!api_url) {
+    console.warn("Backend API URL is not configured. Returning empty payment methods.");
+    return [];
+  }
+  
   const res = await fetch(
     `${api_url}/api/payments/saved-cards?customerId=${customerId}`,
   );

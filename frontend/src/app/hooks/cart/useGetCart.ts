@@ -1,4 +1,4 @@
-import { supabase } from "@/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/supabaseClient";
 import { useQuery } from "@tanstack/react-query";
 import type { CartItem, CartItemProduct } from "@/types";
 
@@ -21,6 +21,11 @@ const transformDbData = (data: RawCartItem[]): CartItem[] => {
 };
 
 const fetchCart = async (cartId: string): Promise<CartItem[]> => {
+  if (!isSupabaseConfigured || !supabase) {
+    console.warn("Supabase is not configured. Returning empty cart.");
+    return [];
+  }
+
   const { data, error } = await supabase
     .from("CartItemsTable")
     .select(
@@ -47,7 +52,10 @@ const fetchCart = async (cartId: string): Promise<CartItem[]> => {
     )
     .eq("cart_id", cartId);
 
-  if (error) throw error;
+  if (error) {
+    console.error("Error fetching cart:", error.message);
+    return [];
+  }
 
   return transformDbData(data as unknown as RawCartItem[]);
 };

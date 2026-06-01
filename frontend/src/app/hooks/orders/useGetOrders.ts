@@ -1,6 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/clerk-react";
-import { supabase } from "@/supabaseClient";
+import { supabase, isSupabaseConfigured } from "@/supabaseClient";
 
 export interface OrderRecord {
   id: string;
@@ -29,13 +29,21 @@ const useGetOrders = () => {
     queryFn: async () => {
       if (!user) return [];
 
+      if (!isSupabaseConfigured || !supabase) {
+        console.warn("Supabase is not configured. Returning empty orders.");
+        return [];
+      }
+
       const { data, error } = await supabase
         .from("OrdersTable")
         .select("*")
         .eq("user_id", user.id)
         .order("created_at", { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        console.error("Error fetching orders:", error.message);
+        return [];
+      }
       return (data as OrderRecord[]) || [];
     },
     enabled: !!user,
