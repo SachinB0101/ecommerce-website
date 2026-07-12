@@ -2,7 +2,7 @@
 
 A local development demo of an e-commerce platform with a **React + TypeScript + Vite** frontend and an **Express + TypeScript** backend.
 
-This project is designed to run locally on your machine, so you can demo it without production deployment.
+This project is designed to run locally on your machine and is not configured for production deployment.
 
 ## What this app includes
 
@@ -46,7 +46,7 @@ VITE_STRIPE_PUBLIC_KEY=<your-stripe-publishable-key>
 VITE_SERVER_API_URL=http://localhost:8080
 ```
 
-> Important: `VITE_SUPABASE_URL` should be the Supabase project domain only (no `/rest/v1/`).
+> Important: `VITE_SUPABASE_URL` must be the Supabase project domain only (no `/rest/v1/`).
 
 Start the frontend:
 
@@ -87,20 +87,41 @@ Backend API is available at:
 http://localhost:8080
 ```
 
+## Docker setup
+
+Run the full app locally with Docker.
+
+```bash
+docker compose up --build
+```
+
+This starts:
+- Frontend at `http://localhost:4173`
+- Backend at `http://localhost:8080`
+
+If port `8080` is already in use, stop the local backend process before starting Docker, or change the backend port mapping in `docker-compose.yml`.
+
+When finished:
+
+```bash
+docker compose down
+```
+
 ## Notes for local development
 
-- The app is meant for **local dev only**.
+- The app is intended for **local development only**.
 - Use Stripe **test keys**: `pk_test_...` in frontend and `sk_test_...` in backend.
-- Supabase URL must not include `/rest/v1/`.
 - Keep `frontend/.env` and `backend/.env` private.
-- The app now runs locally without requiring production deployment.
+- The backend CORS config currently allows requests from `http://localhost:5173` and `http://localhost:4173`.
+- `VITE_SERVER_API_URL` should point to the backend URL used by the browser, typically `http://localhost:8080`.
 
 ## Project structure
 
-- `frontend/` — React application and client-side logic
+- `frontend/` — React application and client-side code
 - `backend/` — Express API for payment routes
-- `frontend/.env` — local frontend settings
-- `backend/.env` — local backend settings
+- `frontend/.env` — frontend configuration
+- `backend/.env` — backend configuration
+- `docker-compose.yml` — local Docker service configuration
 
 ## Quick start
 
@@ -123,4 +144,3 @@ Then visit:
 ```bash
 http://localhost:5173
 ```
-

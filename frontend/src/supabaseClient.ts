@@ -7,8 +7,6 @@ if (!supabaseUrl || !supabaseAnonKey) {
   console.error("Missing Supabase credentials. Please add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to your .env file.");
 }
 
-export const supabase = supabaseUrl && supabaseAnonKey 
-  ? createClient(supabaseUrl, supabaseAnonKey)
-  : null;
+export const supabase = createClient(supabaseUrl ?? "", supabaseAnonKey ?? "");
 
-export const isSupabaseConfigured = !!supabase;
+export const isSupabaseConfigured = Boolean(supabaseUrl && supabaseAnonKey);

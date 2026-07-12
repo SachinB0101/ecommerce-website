@@ -9,6 +9,8 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:5173",
+  "http://localhost:4173",
+  "http://127.0.0.1:4173",
   process.env.FRONTEND_URL,
 ].filter(Boolean) as string[];
 
@@ -17,7 +19,7 @@ const corsOptions: cors.CorsOptions = {
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
-      callback(null, false);
+      callback(new Error("Not allowed by CORS"));
     }
   },
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],

@@ -1,8 +1,9 @@
-// Mock data service for development when Supabase is not configured
+import type { Product } from "@/types";
 
-export const MOCK_PRODUCTS = [
+// Mock data service for development when Supabase is not configured
+export const MOCK_PRODUCTS: Product[] = [
   {
-    id: 1,
+    id: "1",
     name: "Premium Cotton T-Shirt",
     description: "Comfortable and stylish cotton t-shirt for everyday wear",
     price: 29.99,
@@ -11,12 +12,12 @@ export const MOCK_PRODUCTS = [
     images: ["https://images.unsplash.com/photo-1521572163474-6864f9cf17ab?w=400&h=400&fit=crop"],
     inStock: true,
     rating: 4.5,
-    reviews: [],
+    reviews: 0,
     brand: "StyleCo",
     material: "100% Cotton",
   },
   {
-    id: 2,
+    id: "2",
     name: "Elegant Black Blazer",
     description: "Classic blazer perfect for professional settings",
     price: 89.99,
@@ -25,12 +26,12 @@ export const MOCK_PRODUCTS = [
     images: ["https://images.unsplash.com/photo-1539533057440-7814a9d790ff?w=400&h=400&fit=crop"],
     inStock: true,
     rating: 4.8,
-    reviews: [],
+    reviews: 0,
     brand: "Couture",
     material: "Wool Blend",
   },
   {
-    id: 3,
+    id: "3",
     name: "Casual Denim Jacket",
     description: "Versatile denim jacket for any casual occasion",
     price: 59.99,
@@ -39,12 +40,12 @@ export const MOCK_PRODUCTS = [
     images: ["https://images.unsplash.com/photo-1551028719-00167b16ebc5?w=400&h=400&fit=crop"],
     inStock: true,
     rating: 4.6,
-    reviews: [],
+    reviews: 0,
     brand: "DenimCo",
     material: "Denim",
   },
   {
-    id: 4,
+    id: "4",
     name: "Designer Sunglasses",
     description: "Stylish UV-protected designer sunglasses",
     price: 129.99,
@@ -53,12 +54,12 @@ export const MOCK_PRODUCTS = [
     images: ["https://images.unsplash.com/photo-1572635196237-14b3f281503f?w=400&h=400&fit=crop"],
     inStock: true,
     rating: 4.7,
-    reviews: [],
+    reviews: 0,
     brand: "Vision",
     material: "Metal/Glass",
   },
   {
-    id: 5,
+    id: "5",
     name: "Minimalist Leather Handbag",
     description: "Premium leather handbag with minimalist design",
     price: 149.99,
@@ -67,12 +68,12 @@ export const MOCK_PRODUCTS = [
     images: ["https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=400&h=400&fit=crop"],
     inStock: true,
     rating: 4.9,
-    reviews: [],
+    reviews: 0,
     brand: "LuxeLeather",
     material: "Leather",
   },
   {
-    id: 6,
+    id: "6",
     name: "Linen Aesthetic Dress",
     description: "Comfortable linen dress perfect for warm weather",
     price: 74.99,
@@ -81,12 +82,12 @@ export const MOCK_PRODUCTS = [
     images: ["https://images.unsplash.com/photo-1595777712802-e2c90eeb3771?w=400&h=400&fit=crop"],
     inStock: true,
     rating: 4.4,
-    reviews: [],
+    reviews: 0,
     brand: "Ethereal",
     material: "Linen",
   },
   {
-    id: 7,
+    id: "7",
     name: "Ceramic Vase Set",
     description: "Beautiful handcrafted ceramic vase set for home decoration",
     price: 99.99,
@@ -95,12 +96,12 @@ export const MOCK_PRODUCTS = [
     images: ["https://images.unsplash.com/photo-1578500494198-246f612d03b3?w=400&h=400&fit=crop"],
     inStock: true,
     rating: 4.5,
-    reviews: [],
+    reviews: 0,
     brand: "ArtisanCraft",
     material: "Ceramic",
   },
   {
-    id: 8,
+    id: "8",
     name: "Soft Linen Sheets",
     description: "Premium quality linen sheets for comfortable sleep",
     price: 119.99,
@@ -109,7 +110,7 @@ export const MOCK_PRODUCTS = [
     images: ["https://images.unsplash.com/photo-1584622674529-9e1b13d52e20?w=400&h=400&fit=crop"],
     inStock: true,
     rating: 4.8,
-    reviews: [],
+    reviews: 0,
     brand: "SleepLux",
     material: "Linen",
   },
@@ -129,6 +130,6 @@ export const getMockProducts = (category?: string) => {
   );
 };
 
-export const getMockProductById = (id: number) => {
-  return MOCK_PRODUCTS.find((product) => product.id === id);
+export const getMockProductById = (id: string | number) => {
+  return MOCK_PRODUCTS.find((product) => product.id === String(id));
 };
